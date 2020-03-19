@@ -6,7 +6,7 @@ PORT (
      X : in STD_LOGIC_VECTOR ( 7 downto 0 );
      Y : in STD_LOGIC_VECTOR ( 7 downto 0 );
      S : in STD_LOGIC;
-     M : out STD_LOGIC_VECTOR ( 7 downto 0 );
+     M : out STD_LOGIC_VECTOR ( 7 downto 0 )
      );
 END mux2to1_8b;
 
