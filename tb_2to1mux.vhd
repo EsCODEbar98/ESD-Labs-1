@@ -11,8 +11,8 @@ architecture behavior of tb_mux2to1 is
   port (
         x, y : in std_logic_vector(7 downto 0);
         s : in std_logic;
-        m : out std_logic_vector(7 downto 0);
-      )
+        m : out std_logic_vector(7 downto 0)
+      );
   end component;
     
   --declaration of singnals employed in this circuit
