@@ -1,3 +1,4 @@
+  
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
@@ -21,13 +22,6 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
 
   BEGIN
     
-    -- association between signals and ports
-    PORT MAP (
-      x => x,
-      y => y,
-      s => s,
-      m => m
-    );
     
     x <= "00000000";
     y <= "11111111";
@@ -40,8 +34,11 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
         s <= '1';
         WAIT FOR 20 ns;
       END PROCESS;
-   END;
   END Behavior;
+  
+       
+
+
         
   
        
