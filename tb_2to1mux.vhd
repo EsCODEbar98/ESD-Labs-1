@@ -36,7 +36,7 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
       PROCESS
       BEGIN     
         s <= '0';
-        WAIT FOT 20 ns;
+        WAIT FOR 20 ns;
         s <= '1';
         WAIT FOR 20 ns;
       END PROCESS;
