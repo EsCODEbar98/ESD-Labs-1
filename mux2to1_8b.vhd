@@ -7,7 +7,7 @@ PORT (
      Y : in STD_LOGIC_VECTOR ( 7 downto 0 );
      S : in STD_LOGIC;
      M : out STD_LOGIC_VECTOR ( 7 downto 0 );
-     )
+     );
 END mux2to1_8b;
 
 ARCHITECTURE Behavioral of mux2to1_8b is
