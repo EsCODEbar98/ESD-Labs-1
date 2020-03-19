@@ -7,7 +7,7 @@ END tb_mux2to1;
 ARCHITECTURE Behavior OF tb_mux2to1 IS
   
   --component employed in this circuit
-  COMPONENT mux2to1
+  COMPONENT mux2to1 IS
   PORT (
         x, y : in std_logic_vector(7 downto 0);
         s : in std_logic;
