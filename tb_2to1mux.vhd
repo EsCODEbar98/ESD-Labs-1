@@ -16,12 +16,11 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
     
   --Testbench signals
   
-  SIGNAL x : std_logic_vector(7 downto 0);
-  SIGNAL y : std_logic_vector(7 downto 0);
+  SIGNAL x, y, m : std_logic_vector(7 downto 0);
   SIGNAL s : std_logic;
-  SIGNAL m : std_logic_vector(7 downto 0);
-  
+
   BEGIN
+    
     -- association between signals and ports
     PORT MAP (
       x => x,
@@ -34,14 +33,14 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
     y <= "11111111";
     
     -- stimulus process
-    PROCESS
+      PROCESS
       BEGIN     
         s <= '0';
         WAIT FOT 20 ns;
         s <= '1';
         WAIT FOR 20 ns;
       END PROCESS;
-    END;
+   END;
   END Behavior;
         
   
