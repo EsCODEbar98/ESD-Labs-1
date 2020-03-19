@@ -1,15 +1,17 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.all;
+library ieee;
+use ieee.std_logic_1164.all;
 
 --simple multiplexer with 2 inputs
-ENTITY mux2to1 IS
-PORT ( x,y : IN STD_LOGIC;	
-		 s : IN STD_LOGIC;	
-		 m : OUT STD_LOGIC);
-END mux2to1;
+entity mux2to1 is
+port ( 
+       x,y : in STD_LOGIC;	
+       s : in STD_LOGIC;	
+       m : out STD_LOGIC
+);
+end mux2to1;
 
 
-ARCHITECTURE logic OF mux2to1 IS
-BEGIN
+architecture logic of mux2to1 is
+begin
 	m <= (NOT (s) AND x) OR (s AND y);
-END ARCHITECTURE;
+end architecture;
