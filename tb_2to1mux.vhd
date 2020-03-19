@@ -7,7 +7,7 @@ END tb_mux2to1;
 ARCHITECTURE Behavior OF tb_mux2to1 IS
   
   --component employed in this circuit
-  COMPONENT mux2to1 IS
+  COMPONENT mux2to1
   PORT (
         x, y : in std_logic_vector(7 downto 0);
         s : in std_logic;
@@ -42,7 +42,7 @@ ARCHITECTURE Behavior OF tb_mux2to1 IS
         s <= '1';
         WAIT FOR 20 ns;
       END PROCESS;
-    
+    END;
   END Behavior;
         
   
