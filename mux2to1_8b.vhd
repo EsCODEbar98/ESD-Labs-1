@@ -21,6 +21,6 @@ begin
      M(2) <= (NOT(S) AND X(2)) OR (S AND Y(2));
      M(1) <= (NOT(S) AND X(1)) OR (S AND Y(1));
      M(0) <= (NOT(S) AND X(0)) OR (S AND Y(0));
-end Behavioral
+end Behavioral;
 
 
