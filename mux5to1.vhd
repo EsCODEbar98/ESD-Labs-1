@@ -17,16 +17,16 @@ signal m_uv,m_wx,m_uv_wx : STD_LOGIC ;
 
 component mux2to1
 port (
-     x,y : in STD_LOGIC;	
+     x,y : in STD_LOGIC;
      s : in STD_LOGIC;
      m : out STD_LOGIC
      );
 end component;
 
 begin
-	MUX1 : mux2to1 port map ( in_1 => u , in_2 => v , s => s(0) , m => m_uv );
-	MUX2 : mux2to1 port map ( in_1 => w , in_2 => x , s => s(0) , m => m_wx );
-	MUX3 : mux2to1 port map ( in_1 => m_uv , in_2 => m_wx , s => s(1) , m => m_uv_wx );
-	MUX4 : mux2to1 port map ( in_1 => m_uv_wx , in_2 => y , s => s(2) , m => m );
+	MUX1 : mux2to1 port map ( x => u , y => v , s => s(0) , m => m_uv );
+	MUX2 : mux2to1 port map ( x => w , y => x , s => s(0) , m => m_wx );
+	MUX3 : mux2to1 port map ( x => m_uv , y => m_wx , s => s(1) , m => m_uv_wx );
+	MUX4 : mux2to1 port map ( x => m_uv_wx , y=> y , s => s(2) , m => m );
 
 end mux_structure;
