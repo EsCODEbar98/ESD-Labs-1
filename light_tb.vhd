@@ -10,7 +10,6 @@ architecture Behavioral  of light_tb is
 
 --signals
 signal sw_dut,ledr_dut : std_logic_vector (17 downto 0);
-signal ledr_ref : std_logic_vector (17 downto 0);
 
 begin
   -- implicit process testcase
@@ -38,6 +37,5 @@ begin
 
 -- testing instance
 DUT: entity work.light port map (sw_dut , ledr_dut);
-ledr_ref <= sw_dut ;
 
 end behavioral;
