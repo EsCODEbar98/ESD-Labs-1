@@ -16,7 +16,9 @@ architecture structure of mux5to1_3b_synth is
 
 begin
 
-	MUX: entity work.mux5to1_3b port map( u => SW( 14 downto 12 ), 
+	MUX: entity work.mux5to1_gen
+											generic map(3)
+											port map( u => SW( 14 downto 12 ), 
 													  v => SW( 11 downto 9 ),
 													  w => SW( 8 downto 6 ),
 													  x => SW( 5 downto 3 ),
