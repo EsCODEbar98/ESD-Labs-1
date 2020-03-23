@@ -4,7 +4,10 @@ use ieee.std_logic_1164.all;
 --Multiplexer with 5 inputs and 3 selection signals
 
 entity mux5to1_gen is
-  generic ( p : POSITIVE := 3);
+  
+--Si utilizza un generic nonostanto il mux5to1 
+--non necessiti di essere riutilizzato nell'ottica del riutilizzo
+generic ( p : POSITIVE := 3);
 port (
        u,v,w,x,y : in STD_LOGIC_VECTOR ( (p-1) downto 0);
        s : in STD_LOGIC_VECTOR (2 downto 0);

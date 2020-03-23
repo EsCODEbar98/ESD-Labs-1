@@ -7,11 +7,13 @@ use ieee.std_logic_1164.all;
 
 -- empty entity section
 entity tb_mux5to1_gen is
-generic ( p : POSITIVE := 3);
 end tb_mux5to1_gen;
 
 architecture Behavioral of tb_mux5to1_gen is
 
+--Si utilizza una costante in modo da riutilizzare lo stesso tb per il test
+--di mux5to1 con diversi parallelismi effettuando minimi cambiamenti
+constant p : POSITIVE := 3;
 -- testing signals
 
 signal u_dut, v_dut, w_dut, x_dut, y_dut, m_dut : std_logic_vector ( (p-1) downto 0);
@@ -40,8 +42,9 @@ sel <= "000",
     y_dut <= "101";
 
 -- testing instance
-   DUT : entity work.mux5to1_gen  generic map ( p )
-                          	   port map (u_dut, v_dut, w_dut, x_dut, y_dut, sel, m_dut);
+   DUT : entity work.mux5to1_gen  
+                       generic map ( p )
+                   	   port map (u_dut, v_dut, w_dut, x_dut, y_dut, sel, m_dut);
 
 
 -- expected output def
