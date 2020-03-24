@@ -1,17 +1,17 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity mux5to1 is
-generic ( dw : positive := 3);
+entity mux5to1_gen is
+generic ( dw : positive := 1);
 port (
        u,v,w,x,y : in std_logic_vector (dw - 1 downto 0);
        s : in std_logic_vector (2 downto 0);
        m : out std_logic_vector (dw -1 downto 0)
       );
-end mux5to1;
+end mux5to1_gen;
 
 
-architecture mux_structure of mux5to1 is
+architecture mux_structure of mux5to1_gen is
 signal m_uv,m_wx,m_uv_wx : std_logic_vector(dw - 1 downto 0); 
 
 begin

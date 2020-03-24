@@ -38,7 +38,7 @@ sel <= "000",
     y_dut <= "101";
 
 -- testing instance
-   DUT : entity work.mux5to1  
+   DUT : entity work.mux5to1_gen  
          generic map (dw)
          port map (u_dut, v_dut, w_dut, x_dut, y_dut, sel, m_dut);
 
