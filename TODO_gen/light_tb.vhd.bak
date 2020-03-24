@@ -15,8 +15,8 @@ begin
   -- implicit process testcase
 
   
-  sw_dut <= "111111111111111111", "000000000000000000" after 5 ns;
- 
+  sw_dut <= "111111111111111111";
+  sw_dut <= "000000000000000000" after 5 ns;
  
  
 

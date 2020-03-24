@@ -18,8 +18,7 @@ begin
   in2 <= "11111111";
   
   sel <= '0', '1' after 5 ns;
-  DUT: entity work.mux2to1_gen  generic map (dw)
-                                port map( x => in1, y => in2, s => sel, m => m_dut);
+  DUT: entity work.mux2to1_gen port map( x => in1, y => in2, s => sel, m => m_dut);
     
 -- expected output
 with sel select
