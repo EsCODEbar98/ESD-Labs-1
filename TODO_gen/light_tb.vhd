@@ -38,4 +38,4 @@ begin
 -- testing instance
 DUT: entity work.light port map (sw_dut , ledr_dut);
 
-end behavioral;
+end Behavioral;
