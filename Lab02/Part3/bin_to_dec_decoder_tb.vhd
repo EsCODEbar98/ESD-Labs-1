@@ -10,6 +10,11 @@ Architecture struct of bin_to_dec_decoder_tb is
   signal input_number : STD_LOGIC_VECTOR (3 downto 0);
   signal HEXA0_dut : STD_LOGIC_VECTOR (0 to 6 );
   
+  component bin_to_dec_decoder
+    port (m : in std_logic_vector (3 downto 0);
+          HEX0 : out std_logic_vector (0 to 6));
+  end component;
+    
 begin 
   
   process
@@ -38,6 +43,6 @@ begin
        
   end process; 
   
-  DEC_DECODER: entity work.bin_to_dec_decoder port map (input_number,HEXA0_dut);
+  DEC_DECODER: bin_to_dec_decoder port map (input_number,HEXA0_dut);
     
 end architecture;
