@@ -13,6 +13,12 @@ Architecture behaviour of bin_to_dec_converter_tb is
   signal input_number : UNSIGNED (3 downto 0);
   signal HEXA0_DUT : STD_LOGIC_VECTOR (0 to 6);
   signal HEXA1_DUT : STD_LOGIC_VECTOR (0 to 6);
+
+  component bin_to_dec_converter
+    port ( v : in UNSIGNED (3 downto 0);
+         HEX0 : out STD_LOGIC_VECTOR (0 to 6);
+         HEX1 : out STD_LOGIC_VECTOR (0 to 6));
+  end component;
   
 begin 
   
@@ -54,6 +60,6 @@ begin
        
   end process;  
 
-    CONVERTER: entity work.bin_to_dec_converter port map (input_number,HEXA0_dut,HEXA1_dut);
+    CONV: bin_to_dec_converter port map (input_number,HEXA0_dut,HEXA1_dut);
   
 end architecture;
