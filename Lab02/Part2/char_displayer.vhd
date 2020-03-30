@@ -1,6 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+-- displays a letter (H,E,L,O) using a 5:1MUX and 
+-- a 7-seg display according to char_7seg logic 
+
 entity char_displayer is 
 port(
    sel, CH0, CH1, CH2, CH3, CH4 : in std_logic_vector ( 2 downto 0);

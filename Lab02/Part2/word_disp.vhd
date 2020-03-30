@@ -23,21 +23,21 @@ port (
 );
 end component;
 
-signal sel, H, E, L1, L2, O : std_logic_vector(2 downto 0);
+signal sel, C0, C1, C2, C3, C4 : std_logic_vector(2 downto 0);
 
 begin
 
 sel <= SW(17 downto 15);
-H <= SW(14 downto 12);
-E <= SW(11 downto 9);
-L1 <= SW (8 downto 6);
-L2 <= SW(5 downto 3);
-O <= SW(2 downto 0);
+C0 <= SW(14 downto 12); -- first char
+C1 <= SW(11 downto 9);  -- second char
+C2 <= SW (8 downto 6);  -- thir chart
+C3 <= SW(5 downto 3);   -- fourth char
+C4 <= SW(2 downto 0);   -- fifth char
 
-WD0 : char_displayer port map ( sel, H, E, L1, L2, O, HEX4);
-WD1 : char_displayer port map ( sel, E, L1, L2, O, H, HEX3);
-WD2 : char_displayer port map ( sel, L1, L2, O, H, E, HEX2);
-WD3 : char_displayer port map ( sel, L2, O, H, E, L1, HEX1);
-WD4 : char_displayer port map ( sel, O, H, E, L1, L2, HEX0);
+WD0 : char_displayer port map ( sel, C0, C1, C2, C3, C4, HEX4);
+WD1 : char_displayer port map ( sel, C1, C2, C3, C4, C0, HEX3);
+WD2 : char_displayer port map ( sel, C2, C3, C4, C0, C1, HEX2);
+WD3 : char_displayer port map ( sel, C3, C4, C0, C1, C2, HEX1);
+WD4 : char_displayer port map ( sel, C4, C0, C1, C2, C3, HEX0);
    
 end Behavior;
