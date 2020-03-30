@@ -11,9 +11,14 @@ Architecture struct of comparator_tb is
   signal input_number : UNSIGNED (3 downto 0);
   signal z_dut : STD_LOGIC;
   
+  component comparator
+    port( v : IN UNSIGNED(3 DOWNTO 0);
+          z : OUT STD_LOGIC);
+  end component;
+  
 begin
   
   input_number <= "0101", "0111" after 5 ns, "1111" after 10 ns, "1001" after 15 ns, "1010" after 20 ns;
-  COMPARATOR: entity work.comparator port map (input_number, z_dut); 
+  COMP: comparator port map (input_number, z_dut); 
   
 end struct;
