@@ -10,7 +10,13 @@ Architecture struct of converter_tb is
   
   signal input_number : UNSIGNED (3 downto 0);
   signal z_dut : STD_LOGIC;
-  signal m_dut : STD_LOGIC_VECTOR (3 downto 0); 
+  signal m_dut : STD_LOGIC_VECTOR (3 downto 0);
+
+  component converter 
+    port (  v : IN UNSIGNED(3 DOWNTO 0);
+            m : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            z : OUT STD_LOGIC);
+  end component;
   
 begin
   
@@ -52,6 +58,6 @@ begin
        
   end process; 
   
-  CONVERTER: entity work.converter port map( input_number, m_dut, z_dut);
+  CONV: converter port map( input_number, m_dut, z_dut);
     
 end architecture;
