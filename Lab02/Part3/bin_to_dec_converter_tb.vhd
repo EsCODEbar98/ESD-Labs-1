@@ -11,10 +11,11 @@ end bin_to_dec_converter_tb;
 Architecture behaviour of bin_to_dec_converter_tb is
   
   signal input_number : UNSIGNED (3 downto 0);
-  signal HEXA0_DUT : STD_LOGIC_VECTOR (0 to 6);
-  signal HEXA1_DUT : STD_LOGIC_VECTOR (0 to 6);
-  signal HEXA0_REF : INTEGER;
-  signal HEXA1_REF : INTEGER;
+  signal HEXA0 : STD_LOGIC_VECTOR (0 to 6);
+  signal HEXA1 : STD_LOGIC_VECTOR (0 to 6);
+  signal HEXA0_dut : INTEGER;
+  signal HEXA1_dut : INTEGER;
+  signal out_ref : INTEGER;
 
   component bin_to_dec_converter
     port ( v : in UNSIGNED (3 downto 0);
@@ -62,10 +63,10 @@ begin
        
   end process;  
 
-    CONV: bin_to_dec_converter port map (input_number,HEXA0_dut,HEXA1_dut);
+    CONV: bin_to_dec_converter port map (input_number,HEXA0,HEXA1);
       
-    with HEXA0_DUT select 
-     HEXA0_REF <= 
+    with HEXA0 select 
+     HEXA0_dut <= 
       0 when "0000001",
       1 when "1001111",
       2 when "0010010",
@@ -78,8 +79,8 @@ begin
       9 when "0000100",
       10 when others;
       
-    with HEXA1_DUT select 
-     HEXA1_REF <= 
+    with HEXA1 select 
+     HEXA1_dut <= 
       0 when "0000001",
       1 when "1001111",
       2 when "0010010",
@@ -91,5 +92,8 @@ begin
       8 when "0000000",
       9 when "0000100",
       10 when others;
+      
+    
+    out_ref <= to_integer(input_number);
   
 end architecture;
