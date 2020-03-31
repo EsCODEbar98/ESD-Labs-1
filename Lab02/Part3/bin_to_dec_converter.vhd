@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 
 Entity bin_to_dec_converter is
   
-  port ( v : in UNSIGNED (3 downto 0);
+  port ( SW : in UNSIGNED (3 downto 0);
          HEX0 : out STD_LOGIC_VECTOR (0 to 6);
          HEX1 : out STD_LOGIC_VECTOR (0 to 6)
       );
@@ -37,7 +37,7 @@ component converter
 begin 
   
   
-  CONV: converter port map(v,m_temp,z_temp);
+  CONV: converter port map(SW,m_temp,z_temp);
     
   CIRC_B: circuit_B port map(z_temp,HEX1);
     

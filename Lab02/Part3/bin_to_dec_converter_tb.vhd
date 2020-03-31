@@ -18,7 +18,7 @@ Architecture behaviour of bin_to_dec_converter_tb is
   signal out_ref : INTEGER;
 
   component bin_to_dec_converter
-    port ( v : in UNSIGNED (3 downto 0);
+    port ( SW : in UNSIGNED (3 downto 0);
          HEX0 : out STD_LOGIC_VECTOR (0 to 6);
          HEX1 : out STD_LOGIC_VECTOR (0 to 6));
   end component;
