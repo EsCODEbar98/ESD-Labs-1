@@ -10,18 +10,19 @@ Entity circuit_B is
 end circuit_B;
 
 
-Architecture behaviuor of circuit_B is
+Architecture k_map of circuit_B is
   
-  component mux2to1_gen
-    generic ( dw : positive := 1 );     
-    port (x,y : in std_logic_vector ( dw - 1 downto 0 );	
-          s : in std_logic;	
-          m : out std_logic_vector ( dw -1 downto 0 ));
-  end component;
   
 begin
   
-  MUX: mux2to1_gen generic map (7)
-                  	 	 	        port map("0000001", "1111001", z, HEX1);
+  --tale logica permette di stampare uno 0 per numero minori di 10
+  --ed un 1 per numeri maggiori o uguali a 10
+  HEX1(0) <= z;
+  HEX1(1) <= '0';
+  HEX1(2) <= '0';
+  HEX1(3) <= z;
+  HEX1(4) <= z;
+  HEX1(5) <= z;
+  HEX1(6) <= '1';
                   	 	 	          
 end architecture;

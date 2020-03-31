@@ -12,6 +12,9 @@ end circuit_A;
 Architecture k_map of circuit_A is
 
 begin
+  
+  -- tale logica permette di scalare i bit di ingresso di 9 unità
+  -- lavorando solo sui primi 3 bit
   u(0) <= v(0);
   u(1) <= NOT (v(1));
   u(2) <= v(2) AND v(1);

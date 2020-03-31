@@ -14,6 +14,7 @@ end bin_to_dec_converter;
 
 Architecture behaviour of bin_to_dec_converter is
   
+  --segnali necessari al collegamento dei vari blocchi
   signal z_temp : STD_LOGIC;
   signal m_temp : STD_LOGIC_VECTOR (3 downto 0);
 

@@ -12,6 +12,8 @@ end bin_to_dec_decoder;
 architecture k_map of bin_to_dec_decoder is
 begin 
   
+  --si implenta la logica che permette di ttradurre un numero binario di
+  --una cifra in una rappresentazione decimale tramite display
   HEX0(0) <= (not m(3) and not m(2) and not m(1) and m(0)) or (m(2) and not m(1) and not m(0)); 
 
   HEX0(1) <= m(2) and (m(1) xor m(0));

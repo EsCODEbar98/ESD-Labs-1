@@ -6,7 +6,7 @@ USE ieee.numeric_std.all;
 Entity converter is
     port (  v : IN UNSIGNED(3 DOWNTO 0);
             m : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-            z : OUT STD_LOGIC);
+            z : BUFFER STD_LOGIC);
 end converter;
 
 Architecture struct of converter is
@@ -29,22 +29,21 @@ Architecture struct of converter is
   end component;
   
   signal u : UNSIGNED (2 downto 0);
-  signal sel : STD_LOGIC;
   
 begin
   
-  COMP: comparator port map( v,sel );
-  z <= sel;
+  COMP: comparator port map( v,z );
+
   
   CIRC_A: circuit_A port map( v(2 downto 0), u);
     
-  MUX0: mux2to1_gen generic map (1) port map( STD_LOGIC_VECTOR(v(0 downto 0)), STD_LOGIC_VECTOR(u(0 downto 0)), sel,m(0 downto 0));
+  MUX0: mux2to1_gen port map( STD_LOGIC_VECTOR(v(0 downto 0)), STD_LOGIC_VECTOR(u(0 downto 0)), z,m(0 downto 0));
     
-  MUX1: mux2to1_gen generic map (1) port map( STD_LOGIC_VECTOR(v(1 downto 1)), STD_LOGIC_VECTOR(u(1 downto 1)), sel, m(1 downto 1));
+  MUX1: mux2to1_gen port map( STD_LOGIC_VECTOR(v(1 downto 1)), STD_LOGIC_VECTOR(u(1 downto 1)), z, m(1 downto 1));
   
-  MUX2: mux2to1_gen generic map (1) port map( STD_LOGIC_VECTOR(v(2 downto 2)), STD_LOGIC_VECTOR(u(2 downto 2)), sel, m(2 downto 2));
+  MUX2: mux2to1_gen port map( STD_LOGIC_VECTOR(v(2 downto 2)), STD_LOGIC_VECTOR(u(2 downto 2)), z, m(2 downto 2));
   
-  MUX3: mux2to1_gen generic map (1) port map( STD_LOGIC_VECTOR(v(3 downto 3)), "0", sel, m(3 downto 3));
+  MUX3: mux2to1_gen port map( STD_LOGIC_VECTOR(v(3 downto 3)), "0", z, m(3 downto 3));
     
 end architecture;
   
