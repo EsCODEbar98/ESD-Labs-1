@@ -23,26 +23,20 @@ signal SW :  std_logic_vector( 17 downto 0);
 signal H0, H1, H2, H3, H4 : std_logic_vector(6 downto 0);
 
 -- tmp signals
-signal H : std_logic_vector (2 downto 0);
-signal E : std_logic_vector (2 downto 0);
-signal L1 : std_logic_vector (2 downto 0);
-signal L2 : std_logic_vector (2 downto 0);
-signal O : std_logic_vector (2 downto 0);
+signal HELLO : std_logic_vector (14 downto 0);
 
 begin
 
-H <=  "000";
-E <=  "001";
-L1 <= "010";
-L2 <= "010";
-O <=  "011";
+-- simulating HELLO rotation example
+--        -H--E--L--L--O-  
+HELLO <= "000001010010011";
 
--- simulating HELLO rotation example      
-SW <= "000" & H & E & L1 & L2 & O,            
-      "001" & E &L1 & L2 & O & H after 5 ns,  
-      "010" & L1 & L2 & O & H & E after 10 ns, 
-      "011" & L2 & O & H & E & L1 after 15 ns, 
-      "100" & O & H & E & L1 & L2 after 20 ns; 
+      
+SW <= "000" & HELLO,            
+      "001" & HELLO after 5 ns,  
+      "010" & HELLO after 10 ns, 
+      "011" & HELLO after 15 ns, 
+      "100" & HELLO after 20 ns; 
       
 DUT : word_disp port map ( SW, H0, H1, H2, H3, H4);
 
