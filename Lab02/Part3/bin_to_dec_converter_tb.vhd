@@ -11,9 +11,9 @@ end bin_to_dec_converter_tb;
 Architecture behaviour of bin_to_dec_converter_tb is
   
   signal input_number : UNSIGNED (3 downto 0);
-  signal HEXA0 : STD_LOGIC_VECTOR (0 to 6);
+  signal HEXA0 : STD_LOGIC_VECTOR (0 to 6);  
   signal HEXA1 : STD_LOGIC_VECTOR (0 to 6);
-  signal HEXA0_dut : INTEGER;
+  signal HEXA0_dut : INTEGER;        
   signal HEXA1_dut : INTEGER;
   signal out_ref : INTEGER;
 
@@ -24,47 +24,20 @@ Architecture behaviour of bin_to_dec_converter_tb is
   end component;
   
 begin 
+  input_number <= "0000", "0001" after 5 ns, "0010" after 10 ns, "0011" after 15 ns, 
+      	           "0100" after 20 ns, "0101" after 25 ns, "0110" after 30 ns, 
+      	           "0111" after 35 ns, "1000" after 40 ns, "1001" after 45 ns,
+      	           "1010" after 50 ns, "1011" after 55 ns, "1100" after 60 ns,
+      	           "1101" after 65 ns, "1110" after 70 ns, "1111" after 75 ns;
   
-  process
-  begin
-    
-       input_number <= "0000";
-       WAIT FOR 20 ns;
-       input_number <= "0001";
-       WAIT FOR 20 ns;
-       input_number <= "0010";
-       WAIT FOR 20 ns;
-       input_number <= "0011";
-       WAIT FOR 20 ns;
-       input_number <= "0100";
-       WAIT FOR 20 ns;
-       input_number <= "0101";
-       WAIT FOR 20 ns;
-       input_number <= "0110";
-       WAIT FOR 20 ns;
-       input_number <= "0111";
-       WAIT FOR 20 ns;
-       input_number <= "1000";
-       WAIT FOR 20 ns;
-       input_number <= "1001";
-       WAIT FOR 20 ns;
-       input_number <= "1010";
-       WAIT FOR 20 ns;
-       input_number <= "1011";
-       WAIT FOR 20 ns;
-       input_number <= "1100";
-       WAIT FOR 20 ns;
-       input_number <= "1101";
-       WAIT FOR 20 ns;
-       input_number <= "1110";
-       WAIT FOR 20 ns;
-       input_number <= "1111";
-       WAIT FOR 20 ns;
-       
-  end process;  
+   
 
     CONV: bin_to_dec_converter port map (input_number,HEXA0,HEXA1);
-      
+    
+    
+    
+    --si traducono le uscite del convertitore nelle loro 
+    --rappresentazion decimali
     with HEXA0 select 
      HEXA0_dut <= 
       0 when "0000001",

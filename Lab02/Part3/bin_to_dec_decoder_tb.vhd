@@ -17,31 +17,10 @@ Architecture struct of bin_to_dec_decoder_tb is
     
 begin 
   
-  process
-  begin
-    
-       input_number <= "0000";
-       WAIT FOR 20 ns;
-       input_number <= "0001";
-       WAIT FOR 20 ns;
-       input_number <= "0010";
-       WAIT FOR 20 ns;
-       input_number <= "0011";
-       WAIT FOR 20 ns;
-       input_number <= "0100";
-       WAIT FOR 20 ns;
-       input_number <= "0101";
-       WAIT FOR 20 ns;
-       input_number <= "0110";
-       WAIT FOR 20 ns;
-       input_number <= "0111";
-       WAIT FOR 20 ns;
-       input_number <= "1000";
-       WAIT FOR 20 ns;
-       input_number <= "1001";
-       WAIT FOR 20 ns;
-       
-  end process; 
+  input_number <= "0000", "0001" after 5 ns, "0010" after 10 ns, "0011" after 15 ns, 
+      	           "0100" after 20 ns, "0101" after 25 ns, "0110" after 30 ns, 
+      	           "0111" after 35 ns, "1000" after 40 ns, "1001" after 45 ns;
+   
   
   DEC_DECODER: bin_to_dec_decoder port map (input_number,HEXA0_dut);
     

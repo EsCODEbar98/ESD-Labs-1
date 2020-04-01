@@ -7,7 +7,7 @@ Entity comparator is
   PORT (  v : IN UNSIGNED(3 DOWNTO 0);
           z : OUT STD_LOGIC
         );
-END comparator;
+end comparator;
 
 Architecture struct of comparator is
   

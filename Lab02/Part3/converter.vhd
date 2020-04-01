@@ -1,12 +1,12 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.all;
-USE ieee.numeric_std.all;
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 
 Entity converter is
-    port (  v : IN UNSIGNED(3 DOWNTO 0);
-            m : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-            z : BUFFER STD_LOGIC);
+    port (  v : in UNSIGNED(3 DOWNTO 0);
+            m : out STD_LOGIC_VECTOR(3 DOWNTO 0);
+            z : buffer STD_LOGIC);
 end converter;
 
 Architecture struct of converter is
@@ -17,7 +17,7 @@ Architecture struct of converter is
   end component;
   
   component circuit_A
-    PORT (v : IN UNSIGNED(2 DOWNTO 0);
+    port (v : IN UNSIGNED(2 DOWNTO 0);
           u : OUT UNSIGNED(2 DOWNTO 0));
   end component;
   

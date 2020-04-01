@@ -17,21 +17,9 @@ Architecture struct of circuit_A_tb is
    end component;
 
 begin
-  process
-  begin
-       input_number <= "010";
-       WAIT FOR 20 ns;
-       input_number <= "011";
-       WAIT FOR 20 ns;
-       input_number <= "100";
-       WAIT FOR 20 ns;
-       input_number <= "101";
-       WAIT FOR 20 ns;
-       input_number <= "110";
-       WAIT FOR 20 ns;
-       input_number <= "111";
-       WAIT FOR 20 ns;
-  end process; 
+  
+  input_number <= "010", "011" after 5 ns,"100" after 10 ns, "101" after 15 ns, "110" after 20 ns,"111" after 25 ns;
+   
   
   CIRC_A: circuit_A port map( input_number, u_dut );
   
