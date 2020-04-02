@@ -10,15 +10,16 @@ architecture test of bin6bcd_tb is
   signal input_bin : std_logic_vector (5 downto 0);
   
   --expexted display values (decimals/units)
-  signal out1, out0: INTEGER;   
+  signal out1, out0: integer;   
   
-  --bits that turn the display segments on (HEX1/HEX0)
+  --bits driving display (HEX1/HEX0)
   signal d1_dut, d0_dut : std_logic_vector(0 to 6); 
 
   component bin6bcd
      port (b : in std_logic_vector (5 downto 0);
            d1 : out std_logic_vector(0 to 6);
-           d0 : out std_logic_vector(0 to 6));
+           d0 : out std_logic_vector(0 to 6)
+     );
   end component;
 
 
@@ -73,6 +74,4 @@ architecture test of bin6bcd_tb is
     9 when "0000100",
     10 when others; 
    
-
-
 end test;

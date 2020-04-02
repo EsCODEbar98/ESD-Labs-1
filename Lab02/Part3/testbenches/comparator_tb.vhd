@@ -1,19 +1,21 @@
-Library ieee;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 
-Entity comparator_tb is
+entity comparator_tb is
 end comparator_tb;
 
-Architecture struct of comparator_tb is
+architecture struct of comparator_tb is
   
-  signal input_number : UNSIGNED (3 downto 0);
-  signal z_dut : STD_LOGIC;
+  signal input_number : unsigned (3 downto 0);
+  signal z_dut : std_logic;
   
   component comparator
-    port( v : IN UNSIGNED(3 DOWNTO 0);
-          z : OUT STD_LOGIC);
+    port( 
+         v : in unsigned(3 downto 0);
+         z : out std_logic
+   );
   end component;
   
 begin
