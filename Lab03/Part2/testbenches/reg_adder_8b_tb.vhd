@@ -12,7 +12,7 @@ architecture struct of reg_adder_8b_tb is
   
   component reg_adder_8b
     
-    generic (n : integer := 3);
+    generic (n : integer := 8);
      
     port ( R1,R2 : in signed ( n-1 downto 0 );
          add_sub : in std_logic;
@@ -24,11 +24,11 @@ architecture struct of reg_adder_8b_tb is
        
   end component;
   
-  signal A : signed ( 2 downto 0 );
-  signal B : signed ( 2 downto 0 );
+  signal A,B : signed ( 7 downto 0 );
+  signal A_int,B_int : integer;
   signal add_sub,c_out_dut,ovf_det_dut,clk,Rst : std_logic;
-  signal S_dut : signed ( 2 downto 0 );
-  signal S_ref : signed ( 3 downto 0 );
+  signal S_dut : signed ( 7 downto 0 );
+  signal S_int_dut,S_ref : integer;
   
 
   
@@ -50,21 +50,24 @@ begin
   
   add_sub <= '0', '1' after 16 ns;
   
- -- A <= "10111010", "01110110" after 5 ns, "01111101" after 9 ns, "10101000" after 15 ns,
-   --    "11110111" after 21 ns, "01000111" after 25 ns;
+  A <= "10111010", "01110110" after 5 ns, "01111101" after 9 ns, "10101000" after 15 ns,
+       "11110111" after 21 ns, "01000111" after 25 ns;
        
-  --B <= "10111010", "01110110" after 5 ns, "01111101" after 9 ns, "10101000" after 15 ns,
-    --   "11110111" after 21 ns, "01000111" after 25 ns;
-  
-  A <= "010", "110" after 5 ns, "101" after 9 ns, "000" after 15 ns,
-       "111" after 21 ns, "111" after 25 ns;
+  B <= "00011010", "01100110" after 5 ns, "00011101" after 9 ns, "11111000" after 15 ns,
+       "11110001" after 21 ns, "11010101" after 25 ns;   
        
-  B <= "001", "011" after 5 ns, "000" after 9 ns, "100" after 15 ns,
-       "101" after 21 ns, "100" after 25 ns; 
+  A_int <= to_integer(A);
+  B_int <= to_integer(B);
+   
        
   ADD: reg_adder_8b port map (A, B, add_sub, clk, Rst, c_out_dut, ovf_det_dut, S_dut);
   
-  S_ref <= ('0'& A) + ('0'&B);
+  S_int_dut <= to_integer(S_dut);
+  
+  with add_sub select
+    S_ref <=  
+      to_integer(A + B) when '0',
+      to_integer(A - B) when others;
   
   
   
