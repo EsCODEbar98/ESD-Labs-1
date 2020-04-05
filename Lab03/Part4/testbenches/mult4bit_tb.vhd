@@ -9,13 +9,13 @@ end mult4bit_tb;
 architecture testcase of mult4bit_tb is
   component mult4bit is
     port(
-       a, b : in std_logic_vector(3 downto 0);
-       p : out std_logic_vector (7 downto 0)
+       a, b : in unsigned(3 downto 0);
+       p : out unsigned (7 downto 0)
     );
   end component;
 
-  signal a_dut, b_dut : std_logic_vector(3 downto 0);
-  signal p_dut, p_ref : std_logic_vector(7 downto 0);
+  signal a_dut, b_dut : unsigned(3 downto 0);
+  signal p_dut, p_ref : unsigned(7 downto 0);
 
 
 
@@ -26,11 +26,12 @@ architecture testcase of mult4bit_tb is
     process begin
       for i in 0 to 15 loop
 
-        a_dut <= std_logic_vector(to_unsigned(i, a_dut'length));
+        a_dut <= to_unsigned(i, a_dut'length);
 
         for j in 0 to 15 loop
-          b_dut <= std_logic_vector(to_unsigned(j, b_dut'length));
-          p_ref <= std_logic_vector(unsigned(a_dut) * unsigned(b_dut));
+          b_dut <= to_unsigned(j, b_dut'length);
+          wait for 0 ns;
+          p_ref <= a_dut * b_dut; -- works bc they're both unsigned !!
           wait for 5 ns;
         end loop;
 

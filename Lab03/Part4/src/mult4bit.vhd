@@ -1,10 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity mult4bit is
   port(
-     a, b : in std_logic_vector(3 downto 0);
-     p : out std_logic_vector (7 downto 0)
+     a, b : in unsigned(3 downto 0);
+     p : out unsigned (7 downto 0)
   );
 end mult4bit;
 
@@ -12,14 +13,14 @@ end mult4bit;
 architecture behaviour of mult4bit is
   component RCA
     port(
-      a,b : in std_logic_vector(3 downto 0);
-      s : out std_logic_vector(3 downto 0);
+      a,b : in unsigned(3 downto 0);
+      s : out unsigned(3 downto 0);
       cout : out std_logic
     );
   end component;
 
-  signal AND0, AND1, AND2 : std_logic_vector (3 downto 0); --
-  signal B0, B1, B2 : std_logic_vector (3 downto 0); -- intermediate signals between RCAs
+  signal AND0, AND1, AND2 : unsigned (3 downto 0); --
+  signal B0, B1, B2 : unsigned (3 downto 0); -- intermediate signals between RCAs
   begin
 
 -- intermediate signals
