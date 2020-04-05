@@ -1,0 +1,17 @@
+SPIEGAZIONE TEORICA
+Ci si propone di realizzare un ripple-carry adder "sequenziale", ovvero un RCA i 
+cui ingressi provengono da due registri di parallelismo 8b, e le cui uscite vengono
+anchesse salvate su elementi di memoria.
+
+
+PROCEDIMENTO
+Si costruisce un RCA mediante connessione di 8 full-adder, come studiato a lezione (figura n). 
+Si è optato di sintetizzare un sommatore con parallelismo generico, in modo che possa essere
+riutilizzato negli esercizi successivi. 
+Si è scelto inoltre di separare il componente "registered RCA" dall'interfaccia tramite display.
+Si noti che i display che rappresentano gli addendi, e quello che rappresenta il risultato, non
+sono sincronizzati bensì si riferiscono ad istanti di tempo differenti.
+I display in questione, come si può vedere dalla tavola di verità che implementano (figura n), 
+rappresentano il numero '8' e il carattere 'B' con la stessa codifica, come anche il numero '0' e il 
+carattere 'D'.
+

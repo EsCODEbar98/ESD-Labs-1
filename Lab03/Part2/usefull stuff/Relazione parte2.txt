@@ -1,0 +1,7 @@
+SPIEGAZIONE TEORICA
+Si modifica il precedente RCA in modo che esso permetta di svolgere anche la sottrazione.
+
+
+
+PROCEDIMENTO
+Si è eseguito esattamente lo stesso procedimento visto a lezione (figura n).
