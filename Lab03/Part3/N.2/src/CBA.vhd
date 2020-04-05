@@ -1,11 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
-
+use ieee.numeric_std.all;
 entity CBA is
   port(
-  a,b: in std_logic_vector(0 to 3);
+  a,b: in signed(3 downto 0);
   c_in: in std_logic;
-  s : out std_logic_vector(0 to 3);
+  s : out  signed(3 downto 0);
   cout : out std_logic
   );
 end CBA;
@@ -20,9 +20,9 @@ architecture behaviour of CBA is
         );
   end component;
 
-signal c : std_logic_vector (4 downto 0); -- carries
-signal pr: std_logic_vector(0 to 3);
-signal gen: std_logic_vector(0 to 3);
+signal c : signed (4 downto 0); -- carries
+signal pr: signed(0 to 3);
+signal gen: signed(0 to 3);
 
 begin
 
