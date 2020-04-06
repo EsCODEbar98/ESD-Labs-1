@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 
 entity reg_n is
-  generic ( N : integer:=8);
+  generic ( N : integer:=16);
   port (
     R : in signed(N-1 downto 0);
     Clock, Resetn : in std_logic;
@@ -23,5 +23,5 @@ begin
       Q <= R;
     end if;
   end process;
-  
+
 end Behavior;
