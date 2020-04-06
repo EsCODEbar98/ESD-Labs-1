@@ -36,13 +36,21 @@ begin
   
   add_sub <= '0', '1' after 16 ns;
   
-  A <= "10111010", "01110110" after 5 ns, "01111101" after 9 ns, "10101000" after 15 ns,
-       "11110111" after 21 ns, "01000111" after 25 ns;
-       
-  B <= "00011010", "01100110" after 5 ns, "00011101" after 9 ns, "11111000" after 15 ns,
-       "11110001" after 21 ns, "11010101" after 25 ns;  
-       
-  A_int <= to_integer(A);
+  process begin
+      for i in 2 to 4 loop
+
+        A <= to_signed(63*i, A'length);
+
+        for j in 0 to 2 loop
+          
+          B <= to_signed(61*j, B'length);
+          wait for 2 ns;
+          
+        end loop;
+
+      end loop;
+
+    end process;    A_int <= to_integer(A);
   B_int <= to_integer(B);
   
   ADD: adder_8b port map (A,B,add_sub,c_out_dut,ovf_det_dut,S_dut);
