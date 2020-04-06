@@ -2,19 +2,19 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity exa_display is
-  
+entity hex_display is
+
   port( SW : in signed (3 downto 0);
         HEXA : out std_logic_vector ( 0 to 6)
       );
-      
-end exa_display;
+
+end hex_display;
 
 
-architecture behaviour of exa_display is
-  
+architecture behaviour of hex_display is
+
 begin
-  
+
   with SW select
     HEXA <=
       "0000001" when "0000",
@@ -33,10 +33,6 @@ begin
       "0000001" when "1101",
       "0110000" when "1110",
       "0111000" when "1111",
-      "1111111" when others; --all blank for undefigned values
-      
+      "1111111" when others; --all blank for undefined values
       
 end architecture;
-      
-
-  

@@ -1,25 +1,25 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+
 
 entity flipflop is
   port (
-    d, clock, resetn : in std_logic;
-    q : out std_logic
+    D, Clock, Resetn : in std_logic;
+    Q : out std_logic
   );
 end flipflop;
 
-architecture behavior of flipflop is 
 
+architecture Behavior of flipflop is
 begin
-  
-  process (clock, resetn)
+
+  process (Clock, Resetn)
   begin
-    if (resetn = '0') then --asynchronous clear
-      q <= '0';
-    elsif (clock'event and clock = '1') then
-      q <= d;
+    if (Resetn = '0') then -- asynchronous clear
+      Q <= '0';
+    elsif (Clock'EVENT and Clock = '1') then
+      Q <= D;
     end if;
   end process;
-  
-end behavior;
+
+end Behavior;
