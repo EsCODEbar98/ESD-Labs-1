@@ -4,14 +4,14 @@ use ieee.numeric_std.all;
 
 entity reg_CBA_16b is
 
-  generic (n : integer := 16);
+  
 
-  port ( R1,R2 : in signed ( n-1 downto 0 );
+  port ( R1,R2 : in signed ( 15 downto 0 );
          c_in : in std_logic;
          clk,Rst : in std_logic;
          c_out : out std_logic;
          ovf_det : out std_logic;
-         S : out signed ( n-1 downto 0 )
+         S : out signed ( 15 downto 0 )
        );
 
 end reg_CBA_16b;
@@ -24,9 +24,11 @@ architecture struct of reg_CBA_16b is
         );
   end component;
 
+
+
   component reg_n
 
-    generic ( N : integer:=n);
+    generic ( N : integer:=16);
 
     port (R : in signed(N-1 downto 0);
         Clock, Resetn : in std_logic;
@@ -38,8 +40,6 @@ architecture struct of reg_CBA_16b is
 
     component CBA
 
-    generic (n : integer := n);
-
     port(
           A,B : in signed( 15 downto 0 );
           c_in : in std_logic;
@@ -48,7 +48,7 @@ architecture struct of reg_CBA_16b is
         );
     end component;
 
-    signal A,B,Q : signed ( n-1 downto 0 );
+    signal A,B,Q : signed ( 15 downto 0 );
     signal ovf : std_logic;
 
 begin

@@ -10,14 +10,14 @@ end reg_CBA_16b_tb;
 architecture struct of reg_CBA_16b_tb is
 
   component reg_CBA_16b
-    generic (n : integer := 16);
+   
 
-    port ( R1,R2 : in signed ( n-1 downto 0 );
+    port ( R1,R2 : in signed ( 15 downto 0 );
          c_in : in std_logic;
          clk,Rst : in std_logic;
          c_out : out std_logic;
          ovf_det : out std_logic;
-         S : out signed ( n-1 downto 0 )
+         S : out signed ( 15 downto 0 )
        );
 
   end component;
