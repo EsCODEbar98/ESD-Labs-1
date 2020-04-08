@@ -30,12 +30,12 @@ architecture struct of RCA_tb is
 
 begin
   process begin
-      for i in 2 to 4 loop
+      for i in 0 to 4 loop
 
-        A <= to_signed(63*i, A'length);
+        A <= to_signed(25*i, A'length);
 
-        for j in 0 to 2 loop
-          B <= to_signed(61*j, B'length);
+        for j in 0 to 3 loop
+          B <= to_signed(25*j, B'length);
           wait for 5 ns;
         end loop;
 
