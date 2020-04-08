@@ -35,30 +35,32 @@ architecture struct of adder_display is
        
   end component;
   
-  component exa_display
+  component hex_display
     port( SW : in signed (3 downto 0);
         HEXA : out std_logic_vector ( 0 to 6)
       );
   end component;
   
-  signal c_out : std_logic; 
+  
   
   
 begin
   
-  ADD: reg_adder_8b port map(SW(15 downto 8), SW(7 downto 0), SW(16), KEY1, KEY0, c_out, LEDG8, LEDR);
+  ADD: reg_adder_8b port map(R1 => SW(15 downto 8),R2 => SW(7 downto 0),add_sub =>SW(16)
+                              ,clk => KEY1,Rst => KEY0, 
+                              ovf_det => LEDG8,S => LEDR);
   
   --A display
-  HEXA7: exa_display port map(SW(15 downto 12),HEX7);
-  HEXA6: exa_display port map(SW(11 downto 8),HEX6);
+  HEXA7: hex_display port map(SW(15 downto 12),HEX7);
+  HEXA6: hex_display port map(SW(11 downto 8),HEX6);
     
   --B display
-  HEXA5: exa_display port map(SW(7 downto 4),HEX5);
-  HEXA4: exa_display port map(SW(3 downto 0),HEX4); 
+  HEXA5: hex_display port map(SW(7 downto 4),HEX5);
+  HEXA4: hex_display port map(SW(3 downto 0),HEX4); 
    
   --S display 
-  HEXA1: exa_display port map(LEDR(7 downto 4),HEX1);
-  HEXA0: exa_display port map(LEDR(3 downto 0),HEX0);
+  HEXA1: hex_display port map(LEDR(7 downto 4),HEX1);
+  HEXA0: hex_display port map(LEDR(3 downto 0),HEX0);
   
   
 end architecture;
