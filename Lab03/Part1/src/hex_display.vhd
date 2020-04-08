@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity hex_display is
 
-  port( SW : in unsigned (3 downto 0);
+  port( SW : in signed (3 downto 0);
         HEXA : out std_logic_vector ( 0 to 6)
       );
 

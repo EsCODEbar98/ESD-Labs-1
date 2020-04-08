@@ -11,7 +11,7 @@ entity adder_display is
       SW : in signed ( 15 downto 0 );
       KEY1,KEY0 : in std_logic;
       LEDG8 : out std_logic;
-      LEDR : inout signed ( 7 downto 0 );
+      LEDR : buffer signed ( 7 downto 0 );
       HEX7,HEX6,HEX5,HEX4,HEX1,HEX0 : out std_logic_vector(0 to 6)
        );
 end adder_display;
@@ -52,12 +52,14 @@ architecture struct of adder_display is
       );
   end component;
 
-  signal c_out : std_logic;
+  
 
 
 begin
 
-  ADD: reg_adder_8b port map(SW(15 downto 8), SW(7 downto 0), '0', KEY1, KEY0, c_out, LEDG8, LEDR);
+  ADD: reg_adder_8b port map(R1 => SW(15 downto 8),R2 => SW(7 downto 0),
+                              c_in => '0',clk => KEY1,Rst => KEY0, 
+                              ovf_det => LEDG8,S => LEDR);
 
   --A display
   HEXA7: hex_display port map(SW(15 downto 12),HEX7);
