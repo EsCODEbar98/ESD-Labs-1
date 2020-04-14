@@ -19,7 +19,7 @@ architecture behavior of tff is
   --  async reset
     if (rst = '0') then
       Q_tmp<='0';
-    elsif (clk'event and clk = '1') then
+    elsif rising_edge(clk) then
       if (T='1') then
         Q_tmp <= not Q_tmp;
       end if;

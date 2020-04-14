@@ -18,18 +18,22 @@ generic (n:integer);--parallelismo
 
   signal clock, reset, en_dut : std_logic;
   signal cnt_dut : std_logic_vector(n-1 downto 0);
-  signal cnt_ref : integer;
+
+
   begin
 
-    reset <= '0';
+    reset <= '0','1' after 5 ns ;
+     en_dut <= '1';
 
-    process
-      begin
-      clock <= '0', '1' after 5 ns;
+    DUT: counter generic map (n) port  map (en_dut, clock, reset, cnt_dut);
+
+      CLK_PR : process begin
+      clock <= '0';
+      wait for 10 ns;
+      clock <= '1';
       wait for 10 ns;
     end process;
-     en_dut <= '1';
-    DUT: counter generic map (n) port  map (en_dut, clock, reset, cnt_dut);
- --  cnt_ref <= to_integer(cnt_dut);
+
+
 
 end test;

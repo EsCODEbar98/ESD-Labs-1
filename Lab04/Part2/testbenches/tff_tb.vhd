@@ -13,21 +13,21 @@ component  tff is
         );
   end component;
 
-  signal clk_dut, rst_dut, t_dut : std_logic;
+  signal clock, rst_dut, t_dut : std_logic;
   signal q_dut : std_logic;
 
 begin
 
-rst_dut<= '1';
+rst_dut<= '0', '1' after 5 ns;
 
-DUT : tff port map(t_dut, clk_dut, rst_dut, q_dut);
+DUT : tff port map(t_dut, clock, rst_dut, q_dut);
 
-process
-  begin
-
-  clk_dut <= '0', '1' after 5 ns;
-  wait for 10 ns;
-end process;
+    CLK_PR : process begin
+          clock <= '0';
+          wait for 10 ns;
+         clock <= '1';
+         wait for 10 ns;
+        end process;
 
 process
   begin
