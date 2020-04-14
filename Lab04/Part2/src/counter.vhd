@@ -6,31 +6,30 @@ entity counter is
   port (
          en, clk, rst : in std_logic;
         q : out std_logic_vector(n-1 downto 0)
-        );
+  );
 end counter;
 
 architecture behavior of counter is
 
-  component tff
-  port (
-        t, clk, rst : in std_logic;
-          q : out std_logic
-          );
+  component TFF
+    port (
+       T, clk, rst : in std_logic;
+       Q           : out std_logic
+    );
   end component;
 
-  signal t, cnt : std_logic_vector(n-1 downto 0);
+  signal T, cnt : std_logic_vector(n-1 downto 0);
 
   begin
---Inizializzazione del primo FF
-    t(0)<=en;
-    TFF0: tff port map (t(0), clk, rst, cnt(0));
---Assegnazione iterativa agli n TFF
+    --init
+    T(0)<=en;
+    TFF0: TFF port map (t(0), clk, rst, cnt(0));
+
+    -- following FF
     gen: for i in 1 to n-1 generate
-      TFFs: tff port map (t(i), clk, rst, cnt(i));
-              t(i) <= t(i-1) and cnt(i-1);
+      TFFs: TFF port map (T(i), clk, rst, cnt(i));
+      T(i) <= T(i-1) and cnt(i-1);
     end generate;
 
-q <= cnt;
-
-
+   Q <= cnt;
 end behavior;

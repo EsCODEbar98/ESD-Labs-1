@@ -1,34 +1,31 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity tff is
+entity TFF is
   port (
-   t, clk, rst : in std_logic;
-          q : out std_logic
-      );
-end tff;
+   T, clk, rst : in std_logic;
+   Q           : out std_logic
+  );
+end TFF;
 
 architecture behavior of tff is
 
-  signal q_tmp: std_logic;
+  signal Q_tmp: std_logic;
 
   begin
 
     process(clk, rst)
       begin
-  --  Reset asincrono
-    if (rst ='0') then
-     q_tmp<='0';
-    end if;
---Comportamento TFF ad ogni fronte ascendente del CLK
-     if (clk'event and clk = '1') then
-         if (t='0') then
-      q_tmp <= q_tmp;
-    elsif (t='1') then
-      q_tmp <= not(q_tmp);
+  --  async reset
+    if (rst = '0') then
+      Q_tmp<='0';
+    elsif (clk'event and clk = '1') then
+      if (T='1') then
+        Q_tmp <= not Q_tmp;
       end if;
     end if;
 
 end process;
-  q <= q_tmp;
+
+  Q <= Q_tmp;
 end behavior;
