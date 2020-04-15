@@ -1,0 +1,42 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--KEY0=clock,SW1=Enable,SW0=Reset
+entity counter_synth is
+  port(
+     SW : in std_logic_vector (1 downto 0);
+     KEY0 : in std_logic;
+     HEX3 : out std_logic_vector(0 to 6);
+     HEX2 : out std_logic_vector(0 to 6);
+     HEX1 : out std_logic_vector(0 to 6);
+       HEX0 : out std_logic_vector(0 to 6)
+  );
+end counter_synth;
+
+architecture behaviour of counter_synth is
+constant n : integer := 16;
+
+  component counter is
+    generic (n: integer);--parallelismo
+    port (
+           en, clk, rst : in std_logic;
+          q : out std_logic_vector(n-1 downto 0)
+    );
+  end component;
+
+   component hexa_display is
+     port(
+          SW : in std_logic_vector  (3 downto 0);
+          HEXA : out std_logic_vector ( 0 to 6)
+          );
+  end component;
+  signal count :  std_logic_vector(n-1 downto 0);
+
+  begin
+    CNT: counter generic map (n) port  map (SW(1), KEY0, SW(0), count);
+     H0 : hexa_display port map(count(3 downto 0), HEX0);
+     H1 : hexa_display port map(count(7 downto 4), HEX1);
+     H2 : hexa_display port map(count(11 downto 8), HEX2);
+     H3 : hexa_display port map(count(15 downto 12), HEX3);
+end architecture;
