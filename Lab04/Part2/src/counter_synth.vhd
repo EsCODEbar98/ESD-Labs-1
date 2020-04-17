@@ -21,17 +21,17 @@ constant n : integer := 4;
     generic (n: integer);--parallelismo
     port (
            en, clk, rst : in std_logic;
-          q : out std_logic_vector(n-1 downto 0)
+          q : buffer unsigned(n-1 downto 0)
     );
   end component;
 
    component hexa_display is
      port(
-          SW : in std_logic_vector  (3 downto 0);
+          SW : in unsigned (3 downto 0);
           HEXA : out std_logic_vector ( 0 to 6)
           );
   end component;
-  signal count :  std_logic_vector(3 downto 0);
+  signal count :  unsigned(n-1 downto 0);
 
   begin
     CNT: counter generic map (n) port  map (SW(1), KEY0, SW(0), count);

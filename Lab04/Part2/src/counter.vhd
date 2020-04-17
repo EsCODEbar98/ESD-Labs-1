@@ -1,11 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity counter is
   generic (n: integer);--parallelismo
   port (
          en, clk, rst : in std_logic;
-        q : out std_logic_vector(n-1 downto 0)
+        q : buffer unsigned(n-1 downto 0)
   );
 end counter;
 
@@ -19,7 +20,7 @@ architecture behavior of counter is
   end component;
 
   signal T, cnt : std_logic_vector(n-1 downto 0);
- 
+
   begin
     --init
     T(0)<=en;
@@ -31,5 +32,5 @@ architecture behavior of counter is
       T(i) <= T(i-1) and cnt(i-1);
     end generate;
 
-   Q <= cnt;
+   q <= unsigned(cnt);
 end behavior;

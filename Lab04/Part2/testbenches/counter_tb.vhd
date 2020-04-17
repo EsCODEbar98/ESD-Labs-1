@@ -12,12 +12,12 @@ constant n : integer := 16;
 generic (n:integer);--parallelismo
     port (
     en, clk, rst : in std_logic;
-         q : out std_logic_vector(n-1 downto 0)
+         q : buffer unsigned (n-1 downto 0)
          );
   end component;
 
   signal clock, reset, en_dut : std_logic;
-  signal cnt_dut : std_logic_vector(n-1 downto 0);
+  signal cnt_dut : unsigned(n-1 downto 0);
 
 
   begin
@@ -26,6 +26,7 @@ generic (n:integer);--parallelismo
      en_dut <= '1';
 
     DUT: counter generic map (n) port  map (en_dut, clock, reset, cnt_dut);
+
 
       CLK_PR : process begin
       clock <= '0';
