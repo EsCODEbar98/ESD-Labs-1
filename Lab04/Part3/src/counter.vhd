@@ -6,7 +6,7 @@ entity counter is
   generic (N : integer := 16);
   port(
       en, clk, clear : in std_logic;
-      Q : out unsigned (N-1 downto 0)
+      Q : buffer unsigned (N-1 downto 0)
   );
 end counter;
 

@@ -12,7 +12,7 @@ architecture test of counter_tb is
   generic (N : integer := 16);
   port(
       en, clk, clear : in std_logic;
-      Q : out unsigned (N-1 downto 0)
+      Q : buffer unsigned (N-1 downto 0)
   );
  end component;
 
@@ -21,8 +21,9 @@ architecture test of counter_tb is
  signal Q_dut : unsigned (M - 1 downto 0);
 
  begin
-   DUT : counter generic map (M) port map (en,clk, clr, Q_dut);
 
+   DUT : counter generic map (M) port map (en,clk, clr, Q_dut);
+      en<='1';
    CLK_PR : process begin
      clk <= '0';
      wait for 10 ns;
