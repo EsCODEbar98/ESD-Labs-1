@@ -12,24 +12,18 @@ architecture gate of cronometer_tb is
 
   
   component cronometer
-      port ( clk,key0,key3 : in std_logic;
+       port ( clk,key0,key3 : in std_logic;
          SW : in std_logic_vector (7 downto 0);
          LEDR : buffer std_logic;
-         count_fast_out : buffer unsigned (25 downto 0);
-         count_elaps_out : buffer unsigned (7 downto 0);
-         Q: buffer unsigned (15 downto 0)
-         
+         HEX0,HEX1,HEX2,HEX3 : out std_logic_vector ( 0 to 6)   
        );
   end component;
   
   
   
   signal clk, key0, key3,LEDR : std_logic;
-  signal count_fast_out : unsigned (25 downto 0);
-  signal count_elaps_out : unsigned (7 downto 0);
-  signal Q_un,Q_dec,Q_cent,Q_migl : unsigned (3 downto 0);
-  signal Q_dut : unsigned (15 downto 0);
-
+  signal HEX0_dut,HEX1_dut,HEX2_dut,HEX3_dut : std_logic_vector (0 to 6);
+  signal HEX0_dut_dec,HEX1_dut_dec,HEX2_dut_dec,HEX3_dut_dec : integer;
   
   
   
@@ -52,11 +46,67 @@ begin
   
  
   
-  COUN: cronometer port map (clk,key0,key3,"00000111",ledr,count_fast_out,count_elaps_out,Q_dut);
-  Q_un <= Q_dut (3 downto 0);
-  Q_dec <= Q_dut (7 downto 4);
-  Q_cent <= Q_dut (11 downto 8);
-  Q_migl <= Q_dut (15 downto 12); 
+  COUN: cronometer port map (clk,key0,key3,"00000011",ledr,
+                              HEX0_dut,HEX1_dut,HEX2_dut,HEX3_dut);
+                              
+  
+  with HEX0_dut select
+    HEX0_dut_dec <=
+    0 when "0000001",
+    1 when "1001111",
+    2 when "0010010",
+    3 when "0000110",
+    4 when "1001100",
+    5 when "0100100",
+    6 when "0100000",
+    7 when "0001111",
+    8 when "0000000",
+    9 when "0000100",
+    10 when others; 
+    
+  with HEX1_dut select
+    HEX1_dut_dec <=
+    0 when "0000001",
+    1 when "1001111",
+    2 when "0010010",
+    3 when "0000110",
+    4 when "1001100",
+    5 when "0100100",
+    6 when "0100000",
+    7 when "0001111",
+    8 when "0000000",
+    9 when "0000100",
+    10 when others; 
+    
+  with HEX2_dut select
+    HEX2_dut_dec <=
+    0 when "0000001",
+    1 when "1001111",
+    2 when "0010010",
+    3 when "0000110",
+    4 when "1001100",
+    5 when "0100100",
+    6 when "0100000",
+    7 when "0001111",
+    8 when "0000000",
+    9 when "0000100",
+    10 when others; 
+    
+  with HEX3_dut select
+    HEX3_dut_dec <=
+    0 when "0000001",
+    1 when "1001111",
+    2 when "0010010",
+    3 when "0000110",
+    4 when "1001100",
+    5 when "0100100",
+    6 when "0100000",
+    7 when "0001111",
+    8 when "0000000",
+    9 when "0000100",
+    10 when others; 
+                              
+  
       
 end architecture;
 

@@ -2,6 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+--it use 4 counter to count from 0 to 9999 on 16 bit
+
 entity four_digit_counter is
   port ( EN, clk, Rst : in std_logic;
          Q : buffer unsigned (15 downto 0) 
