@@ -20,7 +20,7 @@ architecture testing of hello_fsm_tb is
         H4, H5, H6, H7 : std_logic_vector(6 downto 0);
 
   constant Ts : time := 20 ns;
-  signal H0_ref : std_logic_vector (6 downto 0);
+  -- signal H0_ref : std_logic_vector (6 downto 0);
 
   begin
     FSM_M : hello_fsm port map (reset, clk, H7, H6, H5, H4, H3, H2, H1, H0);
