@@ -7,7 +7,7 @@ entity hello_fsm is
     KEY0                    : in std_logic;  -- reset
     CLOCK_50                : in std_logic; -- clock
     HEX7, HEX6, HEX5, HEX4,
-    HEX3, HEX2, HEX1, HEX0 : out std_logic_vector(6 downto 0)
+    HEX3, HEX2, HEX1, HEX0 : out std_logic_vector(0 to 6)
   );
 end entity;
 
@@ -34,18 +34,18 @@ architecture behavioral of hello_fsm is
   type  STATE is (S0, S1, S2, S3, S4, S5, S6, S7, S8);
   signal present_state  : STATE;
   signal next_state     : STATE;
+
   signal bcd_char     : std_logic_vector ( 0 to 6);
 
   signal start : std_logic;   -- flag signal to start scrolling loop
   signal load : std_logic_vector( 6 downto 0);
 
-  signal count_clr : std_logic; -- counter clear signals
   signal Q_out : unsigned (25 downto 0); -- counter output signal
   signal reg_en : std_logic; -- register enable;
 
   -- tmp signals
   signal H0, H1, H2, H3,
-         H4, H5, H6, H7 : std_logic_vector (6 downto 0);
+         H4, H5, H6, H7 : std_logic_vector (0 to 6);
 
 
   -- constants to improve readability
@@ -59,7 +59,7 @@ architecture behavioral of hello_fsm is
   begin
     -- counter instantiation
     CONT : counter generic map (26, FREQ)
-           port map ('1', CLOCK_50, count_clr, Q_out);
+           port map ('1', CLOCK_50, KEY0, Q_out);
 
 
     reg_en <= '1' when Q_out = FREQ - 1 else '0';
@@ -102,7 +102,6 @@ architecture behavioral of hello_fsm is
         if CLOCK_50'event and CLOCK_50 = '1' then
           if KEY0 = '0' then -- syn reset
             present_state <= S0;
-            count_clr <= '0'; -- clearing counter
           else
             present_state <= next_state;
           end if;

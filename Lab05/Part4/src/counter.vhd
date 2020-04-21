@@ -16,10 +16,10 @@ architecture behavior of counter is
   begin
     process(clear, clk) begin
 
-      if (clear='0') then
-        cnt <= 0;
-      elsif clk'event and clk = '1' then
-        if (en='1') then
+      if clk'event and clk = '1' then
+        if (clear='0') then -- synch clear
+           cnt <= 0;
+        elsif (en='1') then
           if cnt = UP_TO then
             cnt <= 0;
           else

@@ -20,7 +20,6 @@ architecture testing of hello_fsm_tb is
         H4, H5, H6, H7 : std_logic_vector(6 downto 0);
 
   constant Ts : time := 20 ns;
-  -- signal H0_ref : std_logic_vector (6 downto 0);
 
   begin
     FSM_M : hello_fsm port map (reset, clk, H7, H6, H5, H4, H3, H2, H1, H0);
@@ -32,14 +31,6 @@ architecture testing of hello_fsm_tb is
       wait for Ts/2;
     end process;
 
-
-    process begin
-      reset <= '1';
-      wait for 25 ns;
-      reset <= '0';
-    end process;
-    -- reset <= '1', '0' after 20 ns, '1'  after 16000 ns, '0' after 16001 ns;
-
-    -- H0_ref <= "1001000", "0110000" after 1 us, "1110001" after 2 us;
+  reset <= '0', '1' after 25 ns;
 
 end architecture;
