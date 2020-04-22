@@ -17,7 +17,7 @@ entity FSM_synth is
  architecture gate of FSM_synth is
  
  
-  component sequence_inspector
+  component part3
     port ( Rst,clk,w : in std_logic;
          CS : out std_logic_vector ( 8 downto 0);
          z : out std_logic
@@ -27,7 +27,7 @@ entity FSM_synth is
   
  begin
  
-	FSM: sequence_inspector port map(Rst=>SW(0), clk=>KEY0, w=>SW(1),CS=>LEDR,z=>LEDG0);
+	FSM: part3 port map(Rst=>SW(0), clk=>KEY0, w=>SW(1),CS=>LEDR,z=>LEDG0);
 	
 end architecture;
  
