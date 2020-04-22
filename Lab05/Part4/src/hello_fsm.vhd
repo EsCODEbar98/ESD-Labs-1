@@ -31,7 +31,7 @@ architecture behavioral of hello_fsm is
   end component;
 
    -- states definition
-  type  STATE is (S0, S1, S2, S3, S4, S5, S6, S7, S8);
+  type  STATE is (RESET, S1, S2, S3, S4, S5, S6, S7, SCROLL, IDLE);
   signal present_state  : STATE;
   signal next_state     : STATE;
 
@@ -58,7 +58,7 @@ architecture behavioral of hello_fsm is
 
   begin
     -- counter instantiation
-    CONT : counter generic map (26, FREQ)
+    CONT : counter generic map (26, FREQ - 1)
            port map ('1', CLOCK_50, KEY0, Q_out);
 
 
@@ -68,8 +68,8 @@ architecture behavioral of hello_fsm is
     TRANSIT_PROC : process (present_state, reg_en) begin
 
       case present_state is
-        when S0 => if reg_en = '1' then next_state <= S1;
-                   else next_state <= S0;
+        when RESET => if reg_en = '1' then next_state <= S1;
+                   else next_state <= RESET;
                    end if;
         when S1 => if reg_en = '1'  then next_state <= S2;
                   else next_state <= S1;
@@ -89,11 +89,11 @@ architecture behavioral of hello_fsm is
         when S6 => if reg_en = '1'  then next_state <= S7;
                    else next_state <= S6;
                    end if;
-        when S7 => if reg_en = '1'  then next_state <= S8;
+        when S7 => if reg_en = '1'  then next_state <= SCROLL;
                    else next_state <= S7;
                    end if;
-        when S8 => next_state <= S8;     -- indeterminately long loop
-        when others => next_state <= S0; -- back to reset state
+        when SCROLL => next_state <= SCROLL;
+        when others => next_state <= RESET; -- back to reset state
       end case;
     end process;
 
@@ -101,7 +101,7 @@ architecture behavioral of hello_fsm is
       REG_PROC : process (CLOCK_50) begin
         if CLOCK_50'event and CLOCK_50 = '1' then
           if KEY0 = '0' then -- syn reset
-            present_state <= S0;
+            present_state <= RESET;
           else
             present_state <= next_state;
           end if;
@@ -111,9 +111,9 @@ architecture behavioral of hello_fsm is
 
     -- loading correct char in the first reg
     OUT_PROC : process (present_state) begin
-      start <= '0'; --bcd_char <= BLANK;
+      start <= '0'; bcd_char <= BLANK;
       case present_state is
-        when S0 => bcd_char <= H;
+        when RESET => bcd_char <= H;
         when S1 => bcd_char <= E;
         when S2 => bcd_char <= L;
         when S3 => bcd_char <= L;
@@ -121,7 +121,7 @@ architecture behavioral of hello_fsm is
         when S5 => bcd_char <= BLANK;
         when S6 => bcd_char <= BLANK;
         when S7 => bcd_char <= BLANK;
-        when S8 => start <= '1';
+        when SCROLL => start <= '1';
         when others => bcd_char <= BLANK;
       end case;
     end process;
