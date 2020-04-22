@@ -33,7 +33,7 @@ begin
     
   end process CLK_GEN;
   
-  Rst <= '1', '0' after 1 ns, '1' after 201 ns,'0' after 202 ns;
+  Rst <= '1', '0' after 10 ns, '1' after 201 ns,'0' after 210 ns;
   
   w <= '0','1' after 26 ns,'0' after 36 ns,'1' after 76 ns,'0' after 126 ns;
   

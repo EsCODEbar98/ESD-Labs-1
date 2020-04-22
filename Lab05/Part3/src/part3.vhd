@@ -47,14 +47,17 @@ begin
   end process;
   
   
-  FFs: process (Rst,clk)
+  FFs: process (clk)
   
   begin
   
-    if Rst = '1' then
-      y_Q <= A;
-    elsif clk'event and clk = '1' then
-      y_Q <= Y_D;
+    
+    if clk'event and clk = '1' then
+      if Rst = '1' then
+        y_Q <= A;
+      else
+        y_Q <= Y_D;
+      end if;
     end if;
     
   end process;
