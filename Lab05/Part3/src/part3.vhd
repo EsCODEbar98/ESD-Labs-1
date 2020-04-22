@@ -40,7 +40,8 @@ begin
        if w = '0' then Y_D <= B; else Y_D <= I; end if;
       when I =>
        if w = '0' then Y_D <= B; else Y_D <= I; end if;
-      -- when others => ;
+      when others => 
+        Y_D <= A;  --return on reset if unknown states
     end case;
     
   end process;
