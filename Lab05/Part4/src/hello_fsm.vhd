@@ -31,7 +31,7 @@ architecture behavioral of hello_fsm is
   end component;
 
    -- states definition
-  type  STATE is (RESET, S1, S2, S3, S4, S5, S6, S7, SCROLL, IDLE);
+  type  STATE is (RESET, S1, S2, S3, S4, S5, S6, S7, SCROLL);
   signal present_state  : STATE;
   signal next_state     : STATE;
 
