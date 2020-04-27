@@ -1,3 +1,4 @@
+// pseudo-code stuff c++ syntax-like
 #define PAR 1024
 #define Kp  3.75
 #define Ki  2
