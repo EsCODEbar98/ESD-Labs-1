@@ -13,7 +13,7 @@ end entity;
 
 architecture behaviour of memory is
   type MEM is array(0 to 1023) of signed(7 downto 0);
-  signal MEMORIA : MEM;
+  signal memory : MEM;
 
   begin
     READ_WRITE : process(Clk)
@@ -22,9 +22,9 @@ architecture behaviour of memory is
         if CS = '1' then
 
           if WR_RD = '0' then
-            MEMORIA(to_integer(ADDRESS_MEM)) <= DATA_IN;
+            memory(to_integer(ADDRESS_MEM)) <= DATA_IN;
           else
-            DATA_OUT <= MEMORIA(to_integer(ADDRESS_MEM));
+            DATA_OUT <= memory(to_integer(ADDRESS_MEM));
           end if;
 
       end if;

@@ -17,12 +17,12 @@ architecture behavior of counter is
 
       if (clear='1') then
         Q <= (others => '0');
-      elsif rising_edge(clk) then
+      elsif clk'event and clk = '1' then
         if (en='1') then
           Q <= Q + 1;
         end if;
       end if;
 
     end process;
-    
+
 end architecture;

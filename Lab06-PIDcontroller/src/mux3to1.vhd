@@ -6,8 +6,8 @@ entity mux3to1 is
 generic n: integer;
 port
 (
-  a,b: in signed(n-1 downto 0);
-  sel: in std_logic;
+  a, b, c: in signed(n-1 downto 0);
+  sel    : in std_logic_vector(1 downto 0);
   mux_out: out signed(n-1 downto 0)
 );
 end mux3to1;
@@ -15,8 +15,7 @@ end mux3to1;
 architecture behavior of mux3to1 is
 
 begin
-with sel select
-mux_out<= a when "0";
-          b when  "1";
-          a when others;
+mux_out<= a when sel = "00" else
+          b when sel = "01" else 
+          c;
 end architecture
