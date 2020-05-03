@@ -5,14 +5,14 @@ use ieee.numeric_std.all;
 entity memory is
 	port(
        Clk, CS, WR_RD : in std_logic;
-	     ADDRESS_MEM : in unsigned(9 downto 0);
+	     ADDRESS_MEM : in unsigned(1 downto 0);
 	     DATA_IN : in signed(7 downto 0);
 	     DATA_OUT : out signed(7 downto 0)
   );
 end entity;
 
 architecture behaviour of memory is
-  type MEM is array(0 to 1023) of signed(7 downto 0);
+  type MEM is array(0 to 3) of signed(7 downto 0);
   signal memory : MEM;
 
   begin

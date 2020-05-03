@@ -3,10 +3,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity mux5to1 is
-  generic n : integer;
+  generic (n : integer);
   port (
     a, b, c, d, e : in signed(n-1 downto 0);
-    sel           : in unsiged(2 downto 0);
+    sel           : in unsigned(2 downto 0);
     mux_out       : out signed(n-1 downto 0)
   );
 end mux5to1;
