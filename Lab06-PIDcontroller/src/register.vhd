@@ -3,8 +3,9 @@ use ieee.std_logic_1164.all;
 
 
 entity reg is
-  port(
+
     generic (n: integer);--parallelismo
+    port(
     clk, rst,en : in std_logic;
     R           : in signed(n-1 downto 0);
     Q           : out signed(n-1 downto 0)
