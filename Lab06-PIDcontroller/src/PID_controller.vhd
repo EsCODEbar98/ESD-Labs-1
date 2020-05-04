@@ -7,7 +7,9 @@ entity PID_controller is
   port(
       rst,clk,s : in std_logic;
       ext_data : in signed(7 downto 0);
-      done_out : out std_logic
+      done_out : out std_logic;
+      memB_out : out signed(7 downto 0);
+      memB_add : out unsigned(1 downto 0)
       );
 end entity;
 
@@ -165,9 +167,12 @@ begin
 
 
   --
-  MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in);  
-    
+  MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in); 
   
+  --usefull for testbenche 
+  memB_add <= count_out when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZ";
+  memB_out <= memB_in when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZZZZZZZ";
+                
   --OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),);
   --AND_MULT: multiple_and port map (reg_sum_out(19 downto 8),ovf_neg);
     
@@ -264,6 +269,7 @@ begin
       when MEMA_R =>  memA_CS <= '1';
                       memA_R_Wn <= '1';
                       reg_sum_rst <= '1';
+                      
       when ADD1 =>    memA_CS <= '1';
                       memA_R_Wn <= '1';
                       mux1_sel <= "10";
