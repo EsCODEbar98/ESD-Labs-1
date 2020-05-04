@@ -98,8 +98,8 @@ architecture ASM of PID_controller is
   signal count_en, count_rst, count_tc : std_logic;
   signal count_out : unsigned ( 1 downto 0 );
   signal MEMA_CS, MEMA_R_Wn :  std_logic;
-  signal reg_sum_rst, reg_integral_rst,memA_prec_rst, reg_sum_LD,
-         reg_integral_LD,MEMA_prec_LD : std_logic;
+  signal reg_sum_rst, reg_integral_rst,reg_prec_rst, reg_sum_LD,
+         reg_integral_LD,reg_prec_LD : std_logic;
   signal mux1_sel : unsigned( 1 downto 0 );
   signal mux2_sel : unsigned( 2 downto 0 );
   signal sub_add, ovf_pos, ovf_neg : std_logic;
@@ -121,44 +121,58 @@ architecture ASM of PID_controller is
 
 
 begin
-
+  
+  ----------------------------------------------
+  ----------COMPONENT INSTANTIATION-------------
+  ----------------------------------------------
+  
+  --counter inst
   COUNT: counter port map(count_en,clk,count_rst,count_out);
   count_tc <= count_out(0) and count_out(1);
   
+  --
   MEMA: memory port map(clk,MEMA_CS,mema_R_Wn,count_out,ext_data,data_A);
+    
   --bit filling
   data_A_fill(19 downto 7) <= (others => data_A(7));
   data_A_fill(6 downto 0) <= data_A(6 downto 0);
   
+  --mux addends entries
   data1 <=data_A_fill(19) & data_A_fill(16 downto 0) & "00";
   data2 <= data_A_fill(19) & data_A_fill(19) & data_A_fill(19) & data_A_fill(18 downto 2);
   data3 <= data_A_fill(19) & data_A_fill(19) & data_A_fill(18 downto 1);
   data4 <= reg_sum_out(19) & reg_sum_out(17 downto 0) & '0';
   data5 <= reg_prec_out(19) & reg_prec_out(19) & reg_prec_out(18 downto 1);
   
-  REG_PREC: reg port map ( clk, memA_prec_rst, memA_prec_LD, data_A_fill, reg_prec_out);
+  --regs inst
+  REG_PREC: reg port map ( clk, reg_prec_rst,reg_prec_LD, data_A_fill, reg_prec_out);
   REG_INT: reg port map ( clk, reg_integral_rst, reg_integral_LD, adder_out, reg_integral_out);
   REG_SUM: reg port map ( clk, reg_sum_rst, reg_sum_LD, adder_out, reg_sum_out); 
   
+  --mux addends inst
   MUX2: mux5to1 port map ( data_A_fill,data1,data2,data3,data5,mux2_sel,mux2_out);
   MUX1: mux3to1 port map ( reg_sum_out,data4,reg_integral_out,mux1_sel,mux1_out);
   
   ADD: adder port map ( mux1_out,mux2_out,sub_add,adder_out);
-    
+  
+  --data on 8 bit
   reg_sum_out_unfilled <= reg_sum_out(19) & reg_sum_out(6 downto 0);
   
+  --mux ovf inst
   MUX_MEMB: mux3to1 generic map(8)
                     port map (to_signed(-128,8), reg_sum_out_unfilled, to_signed(127,8),mux_memB_sel,memB_in);
                       
 
 
-
+  --
   MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in);  
     
   
   --OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),);
   --AND_MULT: multiple_and port map (reg_sum_out(19 downto 8),ovf_neg);
-  ovf_neg <= not(reg_sum_out(19) and reg_sum_out(18) and reg_sum_out(17) 
+    
+  --combinational ovf flags
+  ovf_neg <= reg_sum_out(19) and not(reg_sum_out(18) and reg_sum_out(17) 
              and reg_sum_out(16) and reg_sum_out(15) and reg_sum_out(14) 
              and reg_sum_out(13) and reg_sum_out(12) and reg_sum_out(11) 
              and reg_sum_out(10) and reg_sum_out(9) and reg_sum_out(8) and reg_sum_out(7));
@@ -173,7 +187,11 @@ begin
   
   
 
-
+  ----------------------------------------------
+  ---------------CONTROL FSM--------------------
+  ----------------------------------------------
+  
+  ---------
   STATE_TRANSITION: process (s,count_tc,ovf_pos,ovf_neg,y_Q)
   begin
     case y_Q is
@@ -202,7 +220,7 @@ begin
   end process;
 
 
-
+  ----------
   FFs: process (clk)
   begin
     if Rst = '1' then
@@ -213,7 +231,7 @@ begin
   end process;
 
 
-
+  -----------
   OUT_DEC: process (y_Q)
   begin
     -- default values
@@ -225,7 +243,7 @@ begin
     reg_integral_rst <= '0';
     reg_integral_LD <= '0';
     reg_sum_LD <= '0';
-    memA_prec_LD <= '0';
+    reg_prec_LD <= '0';
     mux1_sel <= "00";
     mux2_sel <= "000";
     sub_add <= '0';
@@ -233,13 +251,13 @@ begin
     memB_CS <= '0';
     memB_R_Wn <= '0';
     done_out <= '0';
-    memA_prec_rst <= '0';
+    reg_prec_rst <= '0';
 
 
     case y_Q is
      when START => count_rst <= '1';
                    reg_integral_rst <= '1';
-                   memA_prec_rst <= '1';
+                   reg_prec_rst <= '1';
       when MEMA_W =>  memA_CS <= '1';
                       memA_R_Wn <= '0';
                       count_en <= '1';
@@ -278,22 +296,22 @@ begin
                          memB_CS <= '1';
                          memB_R_Wn <=  '0';
                          count_en <= '1';
-                         MEMA_prec_LD <= '1';  ---!!!!!!
-                         memA_CS <= '1';
+                         reg_prec_LD <= '1';  ---!!!!!!
+                         
       when MEMB_W_POS => mux_memB_sel <= "10";
                          memB_CS <= '1';
                          memB_R_Wn <=  '0';
                          count_en <= '1';
-                         MEMA_prec_LD <= '1';
-                         memA_CS <= '1';
+                         reg_prec_LD <= '1';
+                         
       when MEMB_W => mux_memB_sel <= "01";
                      memB_CS <= '1';
                      memB_R_Wn <=  '0';
                      count_en <= '1';
-                     MEMA_prec_LD <= '1';
-                     memA_CS <= '1';
+                     reg_prec_LD <= '1';
+                     
       when DONE => done_out <= '1';
-      -- when others => ... ;
+
     end case;
 
   end process;
