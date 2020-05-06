@@ -1,7 +1,7 @@
 clear
 close all
 clc
-n=4;
+n=1024;
 random_num = int8(randi([-128 127],1,n));
 for i=1:n
     %GENERAZIONE DEI NUMERI BINARI SU 8 BIT

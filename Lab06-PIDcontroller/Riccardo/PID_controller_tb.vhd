@@ -15,7 +15,7 @@ architecture ASM of PID_controller_tb is
            ext_data : in signed(7 downto 0);
            done_out : out std_logic;
            memB_out : out signed(7 downto 0);
-           MEMA_R_Wn_ftb,memB_CS_ftb: out  std_logic
+           memB_CS_ftb: out  std_logic
     );
   end component;
 
@@ -42,19 +42,24 @@ read_file: process
 begin
 
   file_open(file_input , "input.txt",  read_mode);
-  while not endfile(file_input) loop
+  if(start = '1') then
+    wait for 10 ns;
+    while not endfile(file_input) loop
 
-wait until rising_edge(clk) and start='1';
 
- if(MEMA_R_Wn='0') then
-   readline(file_input,buf);
-   read(buf, input_data);
-    ext_data <= signed(input_data);
-else
+        readline(file_input,buf);
+        read(buf, input_data);
+        ext_data <= signed(input_data);
+
+
+      wait for 10 ns;
+
+    end loop;
+  else
     ext_data <= "ZZZZZZZZ";
-  end if ;
+    wait for 10 ns;
 
-  end loop;
+  end if;
 
   file_close(file_input);
 
@@ -62,9 +67,9 @@ end process;
 
 
 rst <= '1','0' after 1 ns;
-start <= '0', '1' after 7 ns,'0' after 489 ns, '1' after 511 ns;
+start <= '0', '1' after 7 ns,'0' after 17 ns;
 
-  PID: PID_controller port map (rst,clk,start,ext_data,done,memB_out,MEMA_R_Wn,memB_CS) ;
+  PID: PID_controller port map (rst,clk,start,ext_data,done,memB_out,memB_CS) ;
 
   write_file: process
    file file_output:text;
@@ -73,9 +78,11 @@ start <= '0', '1' after 7 ns,'0' after 489 ns, '1' after 511 ns;
   begin
 
     file_open(fstatus, file_output, "output.txt",write_mode); -- open the file for writing
-     wait until rising_edge(clk) and memB_CS='1';
-     write(buf,integer'image(to_integer(memB_out)));
-     writeline(file_output, buf);
+
+        wait until rising_edge(clk) and memB_CS = '1';
+        write(buf,integer'image(to_integer(memB_out)));
+        writeline(file_output, buf);
+
   if (done ='1') then
     file_close(file_output); -- flush the buffer to the file
   end if;

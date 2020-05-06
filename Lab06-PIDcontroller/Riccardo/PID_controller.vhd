@@ -9,7 +9,7 @@ entity PID_controller is
           ext_data : in signed(7 downto 0);
           done_out : out std_logic;
           memB_out : out signed(7 downto 0);
-          MEMA_R_Wn_ftb,memB_CS_ftb: out  std_logic
+          memB_CS_ftb: out  std_logic
 
       );
 end entity;
@@ -34,7 +34,7 @@ architecture ASM of PID_controller is
 
 
   component counter
-    generic (N : integer := 2);
+    generic (N : integer := 10);
     port(
         en, clk, clear : in std_logic;
         Q : buffer unsigned (N-1 downto 0)
@@ -63,7 +63,7 @@ architecture ASM of PID_controller is
     component memory
     port (
            Clk, CS, WR_RD : in std_logic;
-	         ADDRESS_MEM : in unsigned(1 downto 0);
+	         ADDRESS_MEM : in unsigned(9 downto 0);
 	         DATA_IN : in signed(7 downto 0);
 	         DATA_OUT : out signed(7 downto 0)
 
@@ -99,7 +99,7 @@ architecture ASM of PID_controller is
 
   --control signals
   signal count_en, count_rst, count_tc : std_logic;
-  signal count_out : unsigned ( 1 downto 0 );
+  signal count_out : unsigned ( 9 downto 0 );
   signal MEMA_CS, MEMA_R_Wn :  std_logic;
   signal reg_sum_rst, reg_integral_rst,reg_prec_rst, reg_sum_LD,
          reg_integral_LD,reg_prec_LD : std_logic;
@@ -131,7 +131,9 @@ begin
 
   --counter inst
   COUNT: counter port map(count_en,clk,count_rst,count_out);
-  count_tc <= count_out(0) and count_out(1);
+  count_tc <= count_out(0) and count_out(1) and count_out(2) and count_out(3)
+             and count_out(4) and count_out(5) and count_out(6) and count_out(7)
+             and count_out(8) and count_out(9) ;
 
   --
   MEMA: memory port map(clk,MEMA_CS,mema_R_Wn,count_out,ext_data,data_A);
@@ -167,14 +169,12 @@ begin
 
 
 
-  --
+
   MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in);
 
-  --usefull for testbenche
---  memB_add <= count_out when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZ";
+  --usefull signals for testbenche
   memB_out <= memB_in when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZZZZZZZ";
-  MEMA_R_Wn_ftb<=  MEMA_R_Wn;
-  memB_CS_ftb<=memB_CS;
+   memB_CS_ftb<=memB_CS;
 
 
   --OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),);

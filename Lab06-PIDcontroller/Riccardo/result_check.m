@@ -1,7 +1,7 @@
 clear
 close all
 clc
-n=4;
+n=1024;
 %GENERAZIONE CASUALE DI INTERI SU 8 BIT ENTRO IL RANGE INDICATO
 Kp=3.75;
 Ki=2;
@@ -16,20 +16,22 @@ empties = find(cellfun(@isempty,input));
 input(empties) = []  ;
 
 for i=1:n
-    input_dec{i}=typecast(uint8(bin2dec(char(input{i}))),'int8')
+    tmp=typecast(uint8(bin2dec(char(input{i}))),'int8');
+    input_dec{i} = cast(tmp,'like',partial);
 end
 %PSEUDOCODE
 for i=1:n
-    partial = Ki* input_dec{i};
     
-    tmp = Kp * input_dec{i} + partial + Kd * (input_dec{i} - memA_prec );
+    partial =int32(partial+ Ki* input_dec{i});
+    
+    tmp = int32(Kp * input_dec{i} + partial + Kd * (input_dec{i} - memA_prec ));
     
     if (tmp > 127)
         tmp =  127;
     elseif (tmp < -128)
         tmp = -128;
     end
-    result(i) = tmp;
+    result(i) = int32(tmp);
     memA_prec  = input_dec{i};
     
 end
@@ -48,8 +50,15 @@ empties = find(cellfun(@isempty,VHDL));
 VHDL(empties) = []  ;
 
 for i=1:n
-    result_vhdl(i)=str2double(VHDL{i});
+    tmp=str2double(VHDL{i});
+    result_vhdl(i)=int32(tmp);
 end
 
-check = isequal(result,result_vhdl);
+for i=1:n
+    check(i) = isequal(result(i),result_vhdl(i));
+end
+error=find(check==0);
+error_vhdl=result_vhdl(error);
+error_matlab=result(error);
+
 
