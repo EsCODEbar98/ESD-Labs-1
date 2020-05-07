@@ -19,7 +19,7 @@ architecture ASM of PID_controller_tb is
     );
   end component;
   constant T_clk : time :=  10 ns;
-  signal rst,clk,start,done,MEMA_R_Wn,memB_CS: std_logic;
+  signal rst,clk,start,done,memB_CS: std_logic;
   signal ext_data,memB_out : signed ( 7 downto 0);
 
 

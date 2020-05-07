@@ -177,8 +177,8 @@ begin
   memB_CS_ftb<=memB_CS;
 
 
-  OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),vector_or) ;
-  AND_MULT: multiple_and port map (reg_sum_out(19 downto 8),vector_and);
+  OR_MULT: multiple_or port map (adder_out(18 downto 7),vector_or) ;
+  AND_MULT: multiple_and port map (adder_out(18 downto 7),vector_and);
 
   --combinational ovf flags
   ovf_neg <= adder_out(19) and not vector_and;
