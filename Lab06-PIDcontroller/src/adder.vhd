@@ -12,6 +12,11 @@ entity adder is
 end entity;
 
 architecture sum of adder is
-begin
-  sum <= A + B when sub_addn = '0' else A - B;
+  signal tmp:signed(n-1 downto 0);
+
+  begin
+    tmp <= B xor (tmp'range => sub_addn);
+
+    sum <= A + tmp + ('0'& sub_addn);
+
 end sum;

@@ -16,25 +16,25 @@ end entity;
 
 architecture ASM of PID_controller is
 
-  --component multiple_AND
---    generic (N: positive := 13 ); --array size
---    port (
---        bit_vect: in signed(N-1 downto 0);
---        res : out std_logic
---        );
---  end component;
---
---  component multiple_OR
---    generic (N: positive := 13 ); --array size
---    port (
---        bit_vect: in signed(N-1 downto 0);
---        res : out std_logic
---        );
---  end component;
+  component multiple_AND
+    generic (N: positive := 12 );-- array size
+    port (
+        bit_vect: in signed(N-1 downto 0);
+        res : out std_logic
+        );
+  end component;
+
+  component multiple_OR
+    generic (N: positive := 12 ); --array size
+    port (
+        bit_vect: in signed(N-1 downto 0);
+        res : out std_logic
+        );
+  end component;
 
 
   component counter
-    generic (N : integer := 2);
+    generic (N : integer := 10);
     port(
         en, clk, clear : in std_logic;
         Q : buffer unsigned (N-1 downto 0)
@@ -63,7 +63,7 @@ architecture ASM of PID_controller is
     component memory
     port (
            Clk, CS, WR_RD : in std_logic;
-	         ADDRESS_MEM : in unsigned(1 downto 0);
+	         ADDRESS_MEM : in unsigned(9 downto 0);
 	         DATA_IN : in signed(7 downto 0);
 	         DATA_OUT : out signed(7 downto 0)
 
@@ -99,13 +99,13 @@ architecture ASM of PID_controller is
 
   --control signals
   signal count_en, count_rst, count_tc : std_logic;
-  signal count_out : unsigned ( 1 downto 0 );
+  signal count_out : unsigned ( 9 downto 0 );
   signal MEMA_CS, MEMA_R_Wn :  std_logic;
   signal reg_sum_rst, reg_integral_rst,reg_prec_rst, reg_sum_LD,
          reg_integral_LD,reg_prec_LD : std_logic;
   signal mux1_sel : unsigned( 1 downto 0 );
   signal mux2_sel : unsigned( 2 downto 0 );
-  signal sub_add, ovf_pos, ovf_neg : std_logic;
+  signal sub_add, ovf_pos, ovf_neg,vector_or,vector_and: std_logic;
   signal mux_memB_sel : unsigned( 1 downto 0 );
   signal memB_CS, memB_R_Wn : std_logic;
 
@@ -131,7 +131,9 @@ begin
 
   --counter inst
   COUNT: counter port map(count_en,clk,count_rst,count_out);
-  count_tc <= count_out(0) and count_out(1);
+  count_tc <= count_out(0) and count_out(1) and count_out(2) and count_out(3)
+             and count_out(4) and count_out(5) and count_out(6) and count_out(7)
+             and count_out(8) and count_out(9) ;
 
   --
   MEMA: memory port map(clk,MEMA_CS,mema_R_Wn,count_out,ext_data,data_A);
@@ -167,32 +169,20 @@ begin
 
 
 
-  
+
   MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in);
 
   --usefull signals for testbenche
   memB_out <= memB_in when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZZZZZZZ";
-   memB_CS_ftb<=memB_CS;
+  memB_CS_ftb<=memB_CS;
 
 
-  --OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),);
-  --AND_MULT: multiple_and port map (reg_sum_out(19 downto 8),ovf_neg);
+  OR_MULT: multiple_or port map (reg_sum_out(18 downto 7),vector_or) ;
+  AND_MULT: multiple_and port map (reg_sum_out(19 downto 8),vector_and);
 
   --combinational ovf flags
-  ovf_neg <= reg_sum_out(19) and not(reg_sum_out(18) and reg_sum_out(17)
-             and reg_sum_out(16) and reg_sum_out(15) and reg_sum_out(14)
-             and reg_sum_out(13) and reg_sum_out(12) and reg_sum_out(11)
-             and reg_sum_out(10) and reg_sum_out(9) and reg_sum_out(8) and reg_sum_out(7));
-
-  ovf_pos <= (not reg_sum_out(19)) and (reg_sum_out(18) or reg_sum_out(17)
-             or reg_sum_out(16) or reg_sum_out(15) or reg_sum_out(14)
-             or reg_sum_out(13) or reg_sum_out(12) or reg_sum_out(11)
-             or reg_sum_out(10) or reg_sum_out(9) or reg_sum_out(8) or reg_sum_out(7));
-
-
-
-
-
+  ovf_neg <= adder_out(19) and not vector_and;
+  ovf_pos <= (not adder_out(19)) and vector_or;
 
   ----------------------------------------------
   ---------------CONTROL FSM--------------------
@@ -304,7 +294,7 @@ begin
                          memB_CS <= '1';
                          memB_R_Wn <=  '0';
                          count_en <= '1';
-                         reg_prec_LD <= '1';  ---!!!!!!
+                         reg_prec_LD <= '1';
 
       when MEMB_W_POS => mux_memB_sel <= "10";
                          memB_CS <= '1';
@@ -323,7 +313,5 @@ begin
     end case;
 
   end process;
-
-
 
 end architecture;

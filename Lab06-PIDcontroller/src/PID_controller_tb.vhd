@@ -18,58 +18,55 @@ architecture ASM of PID_controller_tb is
            memB_CS_ftb: out  std_logic
     );
   end component;
-
+  constant T_clk : time :=  10 ns;
   signal rst,clk,start,done,MEMA_R_Wn,memB_CS: std_logic;
   signal ext_data,memB_out : signed ( 7 downto 0);
 
 
 begin
 
+  rst <= '1','0' after 1 ns;
+  start <= '0', '1' after 7 ns,'0' after 17 ns;
+
   CLK_GEN: process
   begin
     clk <= '0','1' after 5 ns;
 
-    wait for 10 ns;
+    wait for T_clk;
 
   end process CLK_GEN;
 
+  PID: PID_controller port map (rst,clk,start,ext_data,done,memB_out,memB_CS) ;
 
-read_file: process
+  read_file: process
 
   file file_input : text ;
   variable buf  : line;
-  variable input_data : std_logic_vector (7 downto 0); 
-begin
+  variable input_data : std_logic_vector (7 downto 0);
+  begin
 
-  file_open(file_input , "input.txt",  read_mode);
-  if(start = '1') then
-    wait for 10 ns;
-    while not endfile(file_input) loop
+      file_open(file_input , "input.txt",  read_mode);
+      if(start = '1') then
+        wait for T_clk;
+        while not endfile(file_input) loop
 
-     
-        readline(file_input,buf);
-        read(buf, input_data);
-        ext_data <= signed(input_data);
-      
-      
-      wait for 10 ns;
+            readline(file_input,buf);
+            read(buf, input_data);
+            ext_data <= signed(input_data);
 
-    end loop;
-  else
-    ext_data <= "ZZZZZZZZ";
-    wait for 10 ns;
-    
-  end if;
+          wait for T_clk;
 
-  file_close(file_input);
+        end loop;
+      else
+        ext_data <= "ZZZZZZZZ";
+        wait for T_clk;
 
-end process;
+      end if;
 
+      file_close(file_input);
 
-rst <= '1','0' after 1 ns;
-start <= '0', '1' after 7 ns,'0' after 17 ns;
+    end process;
 
-  PID: PID_controller port map (rst,clk,start,ext_data,done,memB_out,memB_CS) ;
 
   write_file: process
    file file_output:text;
@@ -77,12 +74,12 @@ start <= '0', '1' after 7 ns,'0' after 17 ns;
    variable buf: line; -- buffer to file
   begin
 
-    file_open(fstatus, file_output, "output_2.txt",write_mode); -- open the file for writing
-      
+    file_open(fstatus, file_output, "output.txt",write_mode); -- open the file for writing
+
         wait until rising_edge(clk) and memB_CS = '1';
         write(buf,integer'image(to_integer(memB_out)));
         writeline(file_output, buf);
-      
+
   if (done ='1') then
     file_close(file_output); -- flush the buffer to the file
   end if;
