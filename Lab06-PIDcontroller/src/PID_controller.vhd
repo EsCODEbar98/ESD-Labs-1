@@ -16,8 +16,9 @@ end entity;
 
 architecture ASM of PID_controller is
 
+  -- components
   component multiple_AND
-    generic (N: positive := 12 );-- array size
+    generic (N: positive := 12 );
     port (
         bit_vect: in signed(N-1 downto 0);
         res : out std_logic
@@ -25,7 +26,7 @@ architecture ASM of PID_controller is
   end component;
 
   component multiple_OR
-    generic (N: positive := 12 ); --array size
+    generic (N: positive := 12 );
     port (
         bit_vect: in signed(N-1 downto 0);
         res : out std_logic
@@ -89,8 +90,8 @@ architecture ASM of PID_controller is
          );
     end component;
 
-
-  Type state_type is (START,MEMA_W,MEMA_R,ADD1,ADD2,ADD3,ADD4,
+  -- states definition
+  Type state_type is (IDLE,MEMA_W,MEMA_R,ADD1,ADD2,ADD3,ADD4,
                         ADD5,MEMB_W_NEG,MEMB_W_POS,MEMB_W,DONE);
 
 
@@ -109,10 +110,8 @@ architecture ASM of PID_controller is
   signal mux_memB_sel : unsigned( 1 downto 0 );
   signal memB_CS, memB_R_Wn : std_logic;
 
-
-
   --data signals
-  signal data1,data2,data3,data4,data5,data_A_fill : signed (19 downto 0);
+  signal data1, data2, data3, data4, data5, data_A_fill : signed (19 downto 0);
   signal data_A : signed (7 downto 0);
   signal reg_prec_out,reg_sum_out,reg_integral_out : signed (19 downto 0);
   signal mux1_out,mux2_out,adder_out :  signed (19 downto 0);
@@ -120,22 +119,17 @@ architecture ASM of PID_controller is
   signal nor_in,and_in : signed(12 downto 0);
 
 
-
-
-
 begin
 
   ----------------------------------------------
-  ----------COMPONENT INSTANTIATION-------------
+  ----------COMPONENTS INSTANTIATION-------------
   ----------------------------------------------
 
-  --counter inst
   COUNT: counter port map(count_en,clk,count_rst,count_out);
   count_tc <= count_out(0) and count_out(1) and count_out(2) and count_out(3)
              and count_out(4) and count_out(5) and count_out(6) and count_out(7)
              and count_out(8) and count_out(9) ;
 
-  --
   MEMA: memory port map(clk,MEMA_CS,mema_R_Wn,count_out,ext_data,data_A);
 
   --bit filling
@@ -167,15 +161,10 @@ begin
   MUX_MEMB: mux3to1 generic map(8)
                     port map (to_signed(-128,8), reg_sum_out_unfilled, to_signed(127,8),mux_memB_sel,memB_in);
 
-
-
-
   MEMB: memory port map(clk,MEMB_CS,memb_R_Wn,count_out,memB_in);
 
-  --usefull signals for testbenche
   memB_out <= memB_in when y_Q = MEMB_W_NEG or y_Q = MEMB_W_POS or y_Q = MEMB_W else "ZZZZZZZZ";
   memB_CS_ftb<=memB_CS;
-
 
   OR_MULT: multiple_or port map (adder_out(18 downto 7),vector_or) ;
   AND_MULT: multiple_and port map (adder_out(18 downto 7),vector_and);
@@ -188,12 +177,12 @@ begin
   ---------------CONTROL FSM--------------------
   ----------------------------------------------
 
-  ---------
+  -- state transition process
   STATE_TRANSITION: process (s,count_tc,ovf_pos,ovf_neg,y_Q)
   begin
     case y_Q is
-     when START =>
-       if s = '0' then Y_D <= START; else Y_D <= MEMA_W; end if;
+     when IDLE =>    if s = '0' then Y_D <= IDLE;
+                     else Y_D <= MEMA_W; end if;
       when MEMA_W => if count_tc = '0' then Y_D <= MEMA_W;
                      else Y_D <= MEMA_R; end if;
       when MEMA_R => Y_D <= ADD1;
@@ -211,24 +200,24 @@ begin
       when MEMB_W =>     if count_tc = '0' then Y_D <= MEMA_R;
                          else Y_D <= DONE; end if;
       when DONE =>       if s = '1' then Y_D <= DONE;
-                         else Y_D <= START; end if;
-      when others =>   Y_D <= START;  --return to rst state
+                         else Y_D <= IDLE; end if;
+      when others =>   Y_D <= IDLE;  --return to rst state
     end case;
   end process;
 
 
-  ----------
+  --
   FFs: process (clk)
   begin
     if Rst = '1' then
-        y_Q <= START;
+        y_Q <= IDLE;
     elsif clk'event and clk = '1' then
         y_Q <= Y_D;
     end if;
   end process;
 
 
-  -----------
+  -- output evaluation process
   OUT_DEC: process (y_Q)
   begin
     -- default values
@@ -252,7 +241,7 @@ begin
 
 
     case y_Q is
-     when START => count_rst <= '1';
+     when IDLE => count_rst <= '1';
                    reg_integral_rst <= '1';
                    reg_prec_rst <= '1';
       when MEMA_W =>  memA_CS <= '1';
@@ -309,9 +298,7 @@ begin
                      reg_prec_LD <= '1';
 
       when DONE => done_out <= '1';
-
     end case;
 
   end process;
-
 end architecture;

@@ -12,12 +12,16 @@ entity multiple_AND  IS
 end entity;
 
 architecture behavior of multiple_AND is
-    signal tmp: signed (N-1 downto 0);
-begin
-    tmp(0) <= bit_vect(0);
-    gen: for i in 1 to N-1 generate
-        tmp(i) <= tmp(i-1) and bit_vect(i);
-    end generate;
-    res <= std_logic(tmp(N-1));
 
+  function vectorial_and (vec : in signed) return std_logic is
+  variable res : std_logic := '1'; -- 1 and X = X
+  begin
+    for i in vec'range loop
+      res := res and vec(i);
+    end loop;
+    return res;
+  end function;
+
+begin
+  res <= vectorial_and(bit_vect);
 end architecture;

@@ -12,12 +12,16 @@ entity multiple_OR  IS
 end entity;
 
 architecture behavior of multiple_OR is
-    signal tmp: signed (N-1 downto 0);
+  function vectorial_or (vec : in signed) return std_logic is
+  variable res : std_logic := '0'; -- 0 or X = X
+  begin
+    for i in vec'range loop
+      res := res or vec(i);
+    end loop;
+    return res;
+  end function;
+
 begin
-    tmp(0) <= bit_vect(0);
-    gen: for i in 1 to N-1 generate
-        tmp(i) <= tmp(i-1) or bit_vect(i);
-    end generate;
-    res <= std_logic(tmp(N-1));
+  res <= vectorial_or(bit_vect);
 
 end architecture;

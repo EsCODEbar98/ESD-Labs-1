@@ -11,12 +11,7 @@ entity adder is
   );
 end entity;
 
-architecture sum of adder is
-  signal tmp:signed(n-1 downto 0);
-
+architecture behavioral of adder is
   begin
-    tmp <= B xor (tmp'range => sub_addn);
-
-    sum <= A + tmp + ('0'& sub_addn);
-
-end sum;
+    sum <= A + (B xor (B'range => sub_addn)) + ('0'& sub_addn);
+end behavioral;
