@@ -13,5 +13,5 @@ end entity;
 
 architecture behavioral of adder is
   begin
-    sum <= A + (B xor (B'range => sub_addn)) + ('0'& sub_addn);
+    sum <= A + B + ('0'& sub_addn);
 end behavioral;

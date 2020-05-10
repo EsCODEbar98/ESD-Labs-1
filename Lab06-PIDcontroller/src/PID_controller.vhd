@@ -114,7 +114,7 @@ architecture ASM of PID_controller is
   signal data1, data2, data3, data4, data5, data_A_fill : signed (19 downto 0);
   signal data_A : signed (7 downto 0);
   signal reg_prec_out,reg_sum_out,reg_integral_out : signed (19 downto 0);
-  signal mux1_out,mux2_out,adder_out :  signed (19 downto 0);
+  signal mux1_out,mux2_out,adder_in, adder_out :  signed (19 downto 0);
   signal memB_in,reg_sum_out_unfilled : signed (7 downto 0);
   signal nor_in,and_in : signed(12 downto 0);
 
@@ -152,7 +152,8 @@ begin
   MUX2: mux5to1 port map ( data_A_fill,data1,data2,data3,data5,mux2_sel,mux2_out);
   MUX1: mux3to1 port map ( reg_sum_out,data4,reg_integral_out,mux1_sel,mux1_out);
 
-  ADD: adder port map ( mux1_out,mux2_out,sub_add,adder_out);
+  adder_in <= mux2_out xor (mux2_out'range => sub_add);
+  ADD: adder port map ( mux1_out,adder_in,sub_add,adder_out);
 
   --data on 8 bit
   reg_sum_out_unfilled <= reg_sum_out(19) & reg_sum_out(6 downto 0);
