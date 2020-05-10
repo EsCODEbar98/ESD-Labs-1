@@ -126,10 +126,7 @@ begin
   ----------------------------------------------
 
   COUNT: counter port map(count_en,clk,count_rst,count_out);
-  count_tc <= count_out(0) and count_out(1) and count_out(2) and count_out(3)
-             and count_out(4) and count_out(5) and count_out(6) and count_out(7)
-             and count_out(8) and count_out(9) ;
-
+  TC : multiple_and generic map(10) port map (signed(count_out), count_tc);
   MEMA: memory port map(clk,MEMA_CS,mema_R_Wn,count_out,ext_data,data_A);
 
   --bit filling
